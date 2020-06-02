@@ -1,3 +1,19 @@
 {
-    "DND5E.ResourceFourth": "Resource 4"
+    "DND5E.ResourceFourth": "Resource 4",
+    "DND5E.ResourceFifth": "Resource 5",
+    "DND5E.ResourceSixth": "Resource 6",
+    "DND5E.ResourceSeventh": "Resource 7",
+    "DND5E.ResourceEighth": "Resource 8",
+    "DND5E.ResourceNinth": "Resource 9",
+    "DND5E.ResourceTenth": "Resource 10",
+    "DND5E.ResourceEleventh": "Resource 11",
+    "DND5E.ResourceTwelfth": "Resource 12",
+    "DND5E.ResourceThirteenth": "Resource 13",
+    "DND5E.ResourceFourteenth": "Resource 14",
+    "DND5E.ResourceFifteenth": "Resource 15",
+    "DND5E.ResourceSixteenth": "Resource 16",
+    "DND5E.ResourceSeventeenth": "Resource 17",
+    "DND5E.ResourceEighteenth": "Resource 18",
+    "DND5E.ResourceNineteenth": "Resource 19",
+    "DND5E.ResourceTwentieth": "Resource 20"
 }
