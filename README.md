@@ -41,4 +41,4 @@ Check the [Changelog](https://github.com/ardittristan/5eSheet-resourcesPlus/blob
 
 ## Compability
 
-Currently known to work with the default 5e sheet, though it does not go into new lines yet so high numbers might squash the resource boxes a lot.
+Currently known to work with the default 5e sheet.
