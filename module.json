@@ -2,21 +2,26 @@
 	"name": "resourcesplus",
 	"title": "5e-Sheet Resources Plus",
 	"description": "add more resources to your sheet",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"author": "ardittristan#0001",
-	"esmodules": ["addresources.js"],
-	"languages" : [
+	"esmodules": [
+		"addresources.js"
+	],
+	"languages": [
 		{
 			"lang": "en",
 			"name": "English",
 			"path": "lang/en.json"
 		}
 	],
-	 "socket": true,
-    "url": "https://github.com/ardittristan/5eSheet-resourcesPlus/tree/master",
-    "manifest": "https://raw.githubusercontent.com/ardittristan/5eSheet-resourcesPlus/master/module.json",
-    "download": "https://github.com/ardittristan/5eSheet-resourcesPlus/archive/master.zip",
+	"socket": true,
+	"url": "https://github.com/ardittristan/5eSheet-resourcesPlus/tree/master",
+	"manifest": "https://raw.githubusercontent.com/ardittristan/5eSheet-resourcesPlus/master/module.json",
+	"download": "https://github.com/ardittristan/5eSheet-resourcesPlus/archive/master.zip",
 	"minimumCoreVersion": "0.5.5",
 	"compatibleCoreVersion": "0.6.0",
-	"system": "dnd5e"
+	"system": "dnd5e",
+	"styles": [
+		"./css/resources-plus.css"
+	]
 }

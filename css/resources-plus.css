@@ -1,0 +1,7 @@
+.dnd5e.sheet.actor ul.attributes li.attribute {
+    display: table;
+    min-width: 4em; 
+}
+.attributes .attribute:last-child {
+    width: 10px;
+}
