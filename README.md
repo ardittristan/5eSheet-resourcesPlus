@@ -14,9 +14,9 @@ A new resource box called "Resource Count" should appear on the character sheets
 
 ---
 
-## Known issues
+## Known limitations
 
-* When multiple sheets are open it can act weird
+* When more than 10 sheets are open on the same screen the formatting falls apart.
 
 ---
 
