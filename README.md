@@ -1,4 +1,4 @@
-# VTT Hook Macros
+# 5e-Sheet Resources Plus
 
 This Module allows you to have add more resources to the 5e character sheet.
 
