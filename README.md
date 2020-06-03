@@ -14,12 +14,6 @@ A new resource box called "Resource Count" should appear on the character sheets
 
 ---
 
-## Known limitations
-
-* When more than 10 sheets are open on the same screen the formatting falls apart.
-
----
-
 ## Changelog
 
 Check the [Changelog](https://github.com/ardittristan/5eSheet-resourcesPlus/blob/master/CHANGELOG.md)

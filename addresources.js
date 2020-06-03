@@ -27,8 +27,8 @@ Hooks.on('ready', function () {
             res.placeholder = game.i18n.localize("DND5E.Resource" + r.titleCase());
             if (res && res.value === 0 && res.name != "count") delete res.value;
             if (res && res.max === 0 && res.name != "count") delete res.max;
-            if (res.name === "count") res.max = 20;
-            if (res.name === "count" && res.value === null) res.value = 3;
+            if (res && res.name === "count") { res.max = 20; res.label = ""; res.sr = false; res.lr = false; }
+            if (res && res.name === "count" && res.value === null) res.value = 3;
             return arr.concat([res]);
         }, []);
 
@@ -65,28 +65,14 @@ Hooks.on('renderActorSheet5eCharacter', function (dndSheet) {
 
                 if (resourceIndex == undefined) {
                     item.setAttribute("class", "attribute resource count");
-                } else if (
-                    // Check if already visible, so it doesn't override other sheets
-                    (!(item.className.includes("visible"))) && (
-                        // This is the only way I could think of doing it, if you know a better method, please tell me because this is ugly af
-                        (resourceIndex > countValue) ||
-                        (resourceIndex > countValue + 20 && 21 > i + 1) ||
-                        (resourceIndex > countValue + 40 && 42 > i + 1) ||
-                        (resourceIndex > countValue + 60 && 63 > i + 1) ||
-                        (resourceIndex > countValue + 80 && 84 > i + 1) ||
-                        (resourceIndex > countValue + 100 && 105 > i + 1) ||
-                        (resourceIndex > countValue + 120 && 126 > i + 1) ||
-                        (resourceIndex > countValue + 140 && 147 > i + 1) ||
-                        (resourceIndex > countValue + 160 && 168 > i + 1) ||
-                        (resourceIndex > countValue + 180 && 189 > i + 1)
-                    )) {
+                } else if ((!(item.className.includes("visible"))) && ((resourceIndex > countValue) || resourceIndex > countValue + (20 / 21) * (i + 1))) {
                     item.setAttribute("class", "attribute resource hidden");
                 } else if (!(item.className.includes("hidden"))) {
                     item.setAttribute("class", "attribute resource visible");
                 }
             }
         } catch (_) {
-            console.error("Sheet value not initialized yet, please change one resource value to update it.")
+            console.error("Sheet value not initialized yet, please change one resource value to update it.");
         }
     }
 });

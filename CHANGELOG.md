@@ -1,5 +1,10 @@
 # Patch Notes
 
+## Version 1.1.1
+
+* Change loading state of "Resource Count" box.
+* Got someone to fix my shitty if statement, 10 max sheet open limit no longer applies
+
 ## Version 1.1.0
 
 * Fix formatting when multiple sheets are open by allowing for up to 10 sheets.
