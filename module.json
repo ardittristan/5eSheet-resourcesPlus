@@ -1,8 +1,8 @@
 {
 	"name": "resourcesplus",
 	"title": "5e-Sheet Resources Plus",
-	"description": "add more resources to your sheet",
-	"version": "0.0.3",
+	"description": "Add more resources to your sheets",
+	"version": "1.0.0",
 	"author": "ardittristan#0001",
 	"esmodules": [
 		"addresources.js"

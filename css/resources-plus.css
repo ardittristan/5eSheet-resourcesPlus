@@ -1,7 +1,24 @@
-.dnd5e.sheet.actor ul.attributes li.attribute {
+.dnd5e.sheet.actor ul.attributes li.attribute.resource {
     display: table;
-    min-width: 4em; 
+    min-width: 100px; 
 }
+
+.dnd5e.sheet.actor ul.attributes li.attribute.initiative {
+    min-width: 80px;
+}
+
 .attributes .attribute:last-child {
     width: 10px;
+}
+
+.dnd5e.sheet.actor ul.attributes li.attribute.resource.hidden {
+    display: none !important;
+}
+
+.dnd5e.sheet.actor ul.attributes li.attribute.resource.count {
+    min-width: 110px !important;
+}
+
+.dnd5e.sheet.actor ul.attributes li.attribute.resource.count.important {
+    background: red;
 }

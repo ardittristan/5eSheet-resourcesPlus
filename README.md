@@ -10,26 +10,13 @@ To install, import this [Manifest](https://raw.githubusercontent.com/ardittrista
 
 ## Usage
 
-### Global limit
+A new resource box called "Resource Count" should appear on the character sheets. If you change the number in this box, the amount of visible resources changes. *(up to 20)*
 
-By default you only have to change the module setting to add more resource fields.
+---
 
-&nbsp;
+## Known issues
 
-### ❗ Per sheet limit
-
-❗ Journal configuration is still W.I.P. and not available yet.
-
-❗ Toggle the "settings type" setting to Journal mode.
-
-❗ Create a journal with the name you put in the module settings. (default: `Resource Count`)
-
-❗ Then in that journal you can add sheets that you want a custom journal amount for.
-
-❗ To add a new journal, drag a journal into the sheet (make sure it's a new line). Then add the number of resources you want that sheet to have to the right of the entry.
-
-* **You can't have more than 20 resources.**
-* **Make sure you only have one sheet per line.**
+* When multiple sheets are open it can act weird
 
 ---
 

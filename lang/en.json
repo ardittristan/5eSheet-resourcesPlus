@@ -15,5 +15,6 @@
     "DND5E.ResourceSeventeenth": "Resource 17",
     "DND5E.ResourceEighteenth": "Resource 18",
     "DND5E.ResourceNineteenth": "Resource 19",
-    "DND5E.ResourceTwentieth": "Resource 20"
+    "DND5E.ResourceTwentieth": "Resource 20",
+    "DND5E.ResourceCount": "Resource Count"
 }
