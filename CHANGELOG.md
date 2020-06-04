@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.2.1
+
+* Make sheet hook less specific so it works with more skins.
+
 ## Version 1.2.0
 
 * Added back a global resource count option.

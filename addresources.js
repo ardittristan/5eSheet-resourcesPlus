@@ -16,7 +16,7 @@ Hooks.on('init', function () {
         hint: "(requires reload) - Global maximum amount of resources, change this if you use a skin that isn't supported by this module. Might not look nice formatting wise on different sheets.",
         scope: "world",
         config: true,
-        choices: { 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: '10', 11: '11', 12: '12', 13: '13', 14: '14', 15: '15', 16: '16', 17: '17', 18: '18', 19: '19', 20: '20' },
+        choices: { 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: '10', 11: '11', 12: '12', 13: '13', 14: '14', 15: '15', 16: '16', 17: '17', 18: '18', 19: '19', 20: '20 (default)' },
         default: 20,
         type: Number,
         onChange: _ => window.location.reload()
@@ -55,7 +55,7 @@ Hooks.on('ready', function () {
     };
 });
 
-Hooks.on('renderActorSheet5eCharacter', function (dndSheet) {
+Hooks.on('renderActorSheet', function (dndSheet) {
     // Get all html elements that are resources
     var list = document.getElementsByClassName("attribute resource");
     // Check if all resources should be visible
