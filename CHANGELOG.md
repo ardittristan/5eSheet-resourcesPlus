@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.2.0
+
+* Added back a global resource count option.
+
 ## Version 1.1.1
 
 * Change loading state of "Resource Count" box.
