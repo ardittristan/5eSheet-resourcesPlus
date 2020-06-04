@@ -25,3 +25,7 @@ Check the [Changelog](https://github.com/ardittristan/5eSheet-resourcesPlus/blob
 * The default 5e sheet
 * [Sky's Alternate 5th Edition Dungeons & Dragons Sheet](https://github.com/Sky-Captain-13/foundry/tree/master/alt5e)
 * [D&D5E Dark Mode](https://github.com/stryxin/dnd5edark-foundryvtt)
+
+&nbsp;
+
+*If you find more compatible sheets, create an issue or dm me and I'll add it to the list.*
