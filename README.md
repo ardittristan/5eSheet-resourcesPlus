@@ -22,4 +22,6 @@ Check the [Changelog](https://github.com/ardittristan/5eSheet-resourcesPlus/blob
 
 ## Compability
 
-Currently known to work with the default 5e sheet.
+* The default 5e sheet
+* [Sky's Alternate 5th Edition Dungeons & Dragons Sheet](https://github.com/Sky-Captain-13/foundry/tree/master/alt5e)
+* [D&D5E Dark Mode](https://github.com/stryxin/dnd5edark-foundryvtt)
