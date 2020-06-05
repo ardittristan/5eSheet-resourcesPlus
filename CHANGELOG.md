@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.3.1
+
+* Added compatibility with darksheet.
+
 ## Version 1.3.0
 
 * Added resource list to item attributes so you can use the new resources as attributes instead of only the default three.

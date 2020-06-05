@@ -1,5 +1,6 @@
 import ActorSheet5eCharacter from "./../../systems/dnd5e/module/actor/sheets/character.js";
 import { monkeypatchSheet } from "./lib/itemSheet5e.js";
+import { darkSheetCompat } from "./compat/darksheetCompat.js";
 
 // Setting to always show resources
 Hooks.on('init', function () {
@@ -24,7 +25,7 @@ Hooks.on('init', function () {
     });
 });
 
-Hooks.on('ready', function () {
+Hooks.on('ready', async function () {
     // Init resource list + resource counter
     var sheetResources = ["primary", "secondary", "tertiary", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "seventeenth", "eighteenth", "nineteenth", "twentieth", "count"];
     var globalLimit = game.settings.get("resourcesplus", "globalLimit") || 20;
@@ -39,6 +40,12 @@ Hooks.on('ready', function () {
     ActorSheet5eCharacter.prototype.getData = function () {
         const sheetData = originalGetData.call(this);
 
+        // Temporary HP
+        let hp = sheetData.data.attributes.hp;
+        if (hp.temp === 0) delete hp.temp;
+        if (hp.tempmax === 0) delete hp.tempmax;
+
+        // Resources
         sheetData["resources"] = sheetResources.reduce((arr, r) => {
             const res = sheetData.data.resources[r] || {};
             res.name = r;
@@ -50,6 +57,10 @@ Hooks.on('ready', function () {
             if (res && res.name === "count" && res.value > globalLimit) res.value = globalLimit;
             return arr.concat([res]);
         }, []);
+
+        // Return data for rendering
+        // Experience Tracking
+        sheetData["disableExperience"] = game.settings.get("dnd5e", "disableExperienceTracking");
 
         return sheetData;
 
@@ -65,6 +76,22 @@ Hooks.on('ready', function () {
 
     // Monkeypatch item sheet list so it shows up under the resources for items/spells
     monkeypatchSheet(itemResources);
+
+
+
+    // Compatibility
+    game.modules.forEach(module => {
+        switch (module.id) {
+            // darksheet compat
+            case "darksheet":
+                if (module.active) {
+                    darkSheetCompat(sheetResources);
+                }
+                break;
+        }
+    });
+
+
 });
 
 Hooks.on('renderActorSheet', function (dndSheet) {
