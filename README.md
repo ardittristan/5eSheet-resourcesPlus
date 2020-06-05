@@ -22,9 +22,18 @@ Check the [Changelog](https://github.com/ardittristan/5eSheet-resourcesPlus/blob
 
 ## Compability
 
+### Compatible
+
 * The default 5e sheet
 * [Sky's Alternate 5th Edition Dungeons & Dragons Sheet](https://github.com/Sky-Captain-13/foundry/tree/master/alt5e)
 * [D&D5E Dark Mode](https://github.com/stryxin/dnd5edark-foundryvtt)
+* [Tidy 5e](https://github.com/sdenec/tidy5e-sheet)
+* [obsidian](https://bitbucket.org/Fyorl/obsidian) - *Doesn't have resources shown on sheet? I think?*
+
+### Incompatible
+
+* [darksheet 5e](https://github.com/Handyfon/Darksheet/tree/master) - *Will look at in the future.*
+* [DNDBeyond Character Sheet for 5E](https://github.com/jopeek/fvtt-dndbeyond-character-sheet) - *Probably won't fix, too many layout changes.*
 
 &nbsp;
 
