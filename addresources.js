@@ -1,4 +1,5 @@
 import ActorSheet5eCharacter from "./../../systems/dnd5e/module/actor/sheets/character.js";
+import { monkeypatchSheet } from "./lib/itemSheet5e.js";
 
 // Setting to always show resources
 Hooks.on('init', function () {
@@ -44,7 +45,7 @@ Hooks.on('ready', function () {
             res.placeholder = game.i18n.localize("DND5E.Resource" + r.titleCase());
             if (res && res.value === 0 && res.name != "count") delete res.value;
             if (res && res.max === 0 && res.name != "count") delete res.max;
-            if (res && res.name === "count") { res.max = globalLimit; res.label = ""; res.sr = false; res.lr = false; }
+            if (res && res.name === "count") { res.max = globalLimit; res.label = "Resource Count"; res.sr = false; res.lr = false; }
             if (res && res.name === "count" && res.value === null) res.value = 3;
             if (res && res.name === "count" && res.value > globalLimit) res.value = globalLimit;
             return arr.concat([res]);
@@ -53,6 +54,17 @@ Hooks.on('ready', function () {
         return sheetData;
 
     };
+    /** @type {string[]} */
+    var itemResources = [];
+
+    sheetResources.forEach((resource) => {
+        if (!(resource === "count" || resource === "primary" || resource === "secondary" || resource === "tertiary")) {
+            itemResources.push(`resources.${resource}.value`);
+        }
+    });
+
+    // Monkeypatch item sheet list so it shows up under the resources for items/spells
+    monkeypatchSheet(itemResources);
 });
 
 Hooks.on('renderActorSheet', function (dndSheet) {
