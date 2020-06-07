@@ -1,5 +1,10 @@
 # Patch Notes
 
+## Version 1.4.0
+
+* Make resource count not show when a limit is set.
+* Added option for local limits.
+
 ## Version 1.3.2
 
 * Make css compatible with Firefox.

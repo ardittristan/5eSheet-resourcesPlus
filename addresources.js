@@ -23,6 +23,16 @@ Hooks.on('init', function () {
         type: Number,
         onChange: _ => window.location.reload()
     });
+
+    game.settings.register("resourcesplus", "localLimit", {
+        name: "Local resource limit",
+        hint: "Local maximum amount of resources",
+        scope: "client",
+        config: true,
+        choices: { 0: 'disabled (default)', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: '10', 11: '11', 12: '12', 13: '13', 14: '14', 15: '15', 16: '16', 17: '17', 18: '18', 19: '19', 20: '20' },
+        default: 0,
+        type: Number
+    });
 });
 
 Hooks.on('ready', async function () {
@@ -103,10 +113,33 @@ Hooks.on('renderActorSheet', function (dndSheet) {
             // Check if resource is actually a resource and not the counter.
             var resourceIndex = item.innerHTML.match(/(?<=(\<h4)[\s\S]*(placeholder)(.*))([0-9]+)(?=[\s\S]*\<\/h4\>)/g);
             if (resourceIndex == undefined) {
-                item.setAttribute("class", "attribute resource count");
+                item.setAttribute("class", "attribute resource hidden");
             } else {
                 item.setAttribute("class", "attribute resource");
             }
+        }
+    } else if (game.settings.get("resourcesplus", "localLimit") != 0) {
+        try {
+            var countValue = game.settings.get("resourcesplus", "localLimit");
+            var globalLimit = game.settings.get("resourcesplus", "globalLimit") || 20;
+            for (var i = 0; i < list.length; i++) {
+                var item = list[i];
+                // Extract resource number from placeholder name
+                var resourceIndex = item.innerHTML.match(/(?<=(\<h4)[\s\S]*(placeholder)(.*))([0-9]+)(?=[\s\S]*\<\/h4\>)/g);
+                if (!(resourceIndex == undefined)) {
+                    resourceIndex = resourceIndex[0];
+                }
+
+                if (resourceIndex == undefined) {
+                    item.setAttribute("class", "attribute resource hidden");
+                } else if ((!(item.className.includes("visible"))) && ((resourceIndex > countValue) || resourceIndex > countValue + (globalLimit / globalLimit + 1) * (i + 1))) {
+                    item.setAttribute("class", "attribute resource hidden");
+                } else if (!(item.className.includes("hidden"))) {
+                    item.setAttribute("class", "attribute resource visible");
+                }
+            }
+        } catch (_) {
+            console.error("Sheet value not initialized yet, please change one resource value to update it.");
         }
     } else {
         // Sometimes the sheet value isn't there yet
