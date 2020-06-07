@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.3.2
+
+* Make css compatible with Firefox.
+
 ## Version 1.3.1
 
 * Added compatibility with darksheet.
