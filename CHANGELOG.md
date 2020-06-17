@@ -1,5 +1,10 @@
 # Patch Notes
 
+## Version 1.4.1
+
+* Make it possible to not show resources at all locally.
+* Change the settings from dropdown to slider.
+
 ## Version 1.4.0
 
 * Make resource count not show when a limit is set.

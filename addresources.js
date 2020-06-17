@@ -18,7 +18,7 @@ Hooks.on('init', function () {
         hint: "(requires reload) - Global maximum amount of resources, change this if you use a skin that isn't supported by this module. Might not look nice formatting wise on different sheets.",
         scope: "world",
         config: true,
-        choices: { 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: '10', 11: '11', 12: '12', 13: '13', 14: '14', 15: '15', 16: '16', 17: '17', 18: '18', 19: '19', 20: '20 (default)' },
+        range: { min: 1, max: 20, step: 1 },
         default: 20,
         type: Number,
         onChange: _ => window.location.reload()
@@ -29,13 +29,28 @@ Hooks.on('init', function () {
         hint: "Local maximum amount of resources",
         scope: "client",
         config: true,
-        choices: { 0: 'disabled (default)', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: '10', 11: '11', 12: '12', 13: '13', 14: '14', 15: '15', 16: '16', 17: '17', 18: '18', 19: '19', 20: '20' },
-        default: 0,
+        range: { min: -1, max: 20, step: 1 },
+        default: -1,
         type: Number
+    });
+
+    game.settings.register("resourcesplus", "migratedLocalLimit", {
+        config: false,
+        scope: "client",
+        default: false,
+        type: Boolean
     });
 });
 
 Hooks.on('ready', async function () {
+    // check migration
+    if (!game.settings.get("resourcesplus", "migratedLocalLimit")) {
+        if (game.settings.get("resourcesplus", "localLimit") === 0) {
+            game.settings.set("resourcesplus", "localLimit", -1);
+        }
+        game.settings.set("resourcesplus", "migratedLocalLimit", true);
+    }
+
     // Init resource list + resource counter
     var sheetResources = ["primary", "secondary", "tertiary", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "seventeenth", "eighteenth", "nineteenth", "twentieth", "count"];
     var globalLimit = game.settings.get("resourcesplus", "globalLimit") || 20;
@@ -118,7 +133,7 @@ Hooks.on('renderActorSheet', function (dndSheet) {
                 item.setAttribute("class", "attribute resource");
             }
         }
-    } else if (game.settings.get("resourcesplus", "localLimit") != 0) {
+    } else if (game.settings.get("resourcesplus", "localLimit") != -1) {
         try {
             var countValue = game.settings.get("resourcesplus", "localLimit");
             var globalLimit = game.settings.get("resourcesplus", "globalLimit") || 20;
