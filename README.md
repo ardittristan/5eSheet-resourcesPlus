@@ -23,7 +23,6 @@ Check the [Changelog](https://github.com/ardittristan/5eSheet-resourcesPlus/blob
 
 ## Known issues
 
-* If you have [Pin](https://bitbucket.org/Fyorl/foundry-pin/src/master/) installed, you might have to reload the sheet to show all resources.
 * Firefox 77 doesn't support regex lookbehinds and doesn't function as such, please use Firefox Beta 78, or wait until June 30th 2020 for it to release.
 
 &nbsp;

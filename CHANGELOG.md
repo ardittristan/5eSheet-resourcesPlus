@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.5.0
+
+* Move monkeypatch into init instead of ready so it loads earlier, this fixes compatibility with Pins.
+
 ## Version 1.4.1
 
 * Make it possible to not show resources at all locally.

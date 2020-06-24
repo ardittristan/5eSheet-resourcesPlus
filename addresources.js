@@ -40,9 +40,7 @@ Hooks.on('init', function () {
         default: false,
         type: Boolean
     });
-});
 
-Hooks.on('ready', async function () {
     // check migration
     if (!game.settings.get("resourcesplus", "migratedLocalLimit")) {
         if (game.settings.get("resourcesplus", "localLimit") === 0) {
