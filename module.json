@@ -2,7 +2,7 @@
 	"name": "resourcesplus",
 	"title": "5e-Sheet Resources Plus",
 	"description": "A module that allows you to add more resources to character sheets",
-	"version": "1.5.1",
+	"version": "1.5.2",
 	"author": "ardittristan#0001",
 	"esmodules": [
 		"addresources.js"
@@ -17,6 +17,11 @@
 			"lang": "pt-BR",
 			"name": "Português do Brasil",
 			"path": "lang/pt-BR.json"
+		},
+		{
+			"lang": "es-ES",
+			"name": "Español",
+			"path": "lang/es-ES.json"
 		}
 	],
 	"socket": true,
@@ -24,7 +29,7 @@
 	"manifest": "https://raw.githubusercontent.com/ardittristan/5eSheet-resourcesPlus/master/module.json",
 	"download": "https://github.com/ardittristan/5eSheet-resourcesPlus/archive/master.zip",
 	"minimumCoreVersion": "0.5.5",
-	"compatibleCoreVersion": "0.6.4",
+	"compatibleCoreVersion": "0.6.5",
 	"system": "dnd5e",
 	"styles": [
 		"./css/resources-plus.css"
