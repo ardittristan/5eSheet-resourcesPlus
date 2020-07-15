@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.5.2
+
+* Added Spanish language support.
+
 ## Version 1.5.1
 
 * Added Brazilian Portuguese language support.
