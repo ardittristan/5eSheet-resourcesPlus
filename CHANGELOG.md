@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.5.3
+
+* Make use of global dnd5e class variables instead of direct file linking
+
 ## Version 1.5.2
 
 * Added Spanish language support.

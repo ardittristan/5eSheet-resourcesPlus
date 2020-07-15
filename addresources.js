@@ -1,4 +1,3 @@
-import ActorSheet5eCharacter from "./../../systems/dnd5e/module/actor/sheets/character.js";
 import { monkeypatchSheet } from "./lib/itemSheet5e.js";
 import { darkSheetCompat } from "./compat/darksheetCompat.js";
 
@@ -59,8 +58,8 @@ Hooks.on('init', function () {
     }
 
     // Monkeypatch original function
-    const originalGetData = ActorSheet5eCharacter.prototype.getData;
-    ActorSheet5eCharacter.prototype.getData = function () {
+    const originalGetData = game.dnd5e.applications.ActorSheet5eCharacter.prototype.getData;
+    game.dnd5e.applications.ActorSheet5eCharacter.prototype.getData = function () {
         const sheetData = originalGetData.call(this);
 
         // Temporary HP
