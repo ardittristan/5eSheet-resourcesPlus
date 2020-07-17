@@ -19,8 +19,8 @@
 			"path": "lang/pt-BR.json"
 		},
 		{
-			"lang": "es-ES",
-			"name": "Español",
+			"lang": "es",
+			"name": "Castellano",
 			"path": "lang/es-ES.json"
 		}
 	],
