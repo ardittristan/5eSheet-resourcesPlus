@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.5.4
+
+* Fix translation
+
 ## Version 1.5.3
 
 * Make use of global dnd5e class variables instead of direct file linking
