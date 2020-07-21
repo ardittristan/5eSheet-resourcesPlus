@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.5.5
+
+* Fix compat with Monster Blocks
+
 ## Version 1.5.4
 
 * Fix translation

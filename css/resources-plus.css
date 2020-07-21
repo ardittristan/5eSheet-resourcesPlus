@@ -22,7 +22,7 @@
     min-width: 80px;
 }
 
-.attributes .attribute:last-child {
+.attributes .attribute.resource:last-child {
     width: 10px;
 }
 
