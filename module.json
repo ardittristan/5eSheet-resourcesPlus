@@ -27,9 +27,9 @@
 	"socket": true,
 	"url": "https://github.com/ardittristan/5eSheet-resourcesPlus/tree/master",
 	"manifest": "https://raw.githubusercontent.com/ardittristan/5eSheet-resourcesPlus/master/module.json",
-	"download": "https://github.com/ardittristan/5eSheet-resourcesPlus/archive/master.zip",
+	"download": "https://github.com/ardittristan/5eSheet-resourcesPlus/releases/download/latest/resources-plus.zip",
 	"minimumCoreVersion": "0.5.5",
-	"compatibleCoreVersion": "0.6.5",
+	"compatibleCoreVersion": "0.7.0",
 	"system": "dnd5e",
 	"styles": [
 		"./css/resources-plus.css"
