@@ -1,4 +1,4 @@
-![GitHub Releases](https://img.shields.io/github/downloads/ardittristan/5eSheet-resourcesPlus/latest/total)
+![GitHub All Releases](https://img.shields.io/github/downloads/ardittristan/5eSheet-resourcesPlus/total)
 
 # 5e-Sheet Resources Plus
 
