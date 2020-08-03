@@ -27,10 +27,10 @@
 	"socket": true,
 	"url": "https://github.com/ardittristan/5eSheet-resourcesPlus/tree/master",
 	"manifest": "https://raw.githubusercontent.com/ardittristan/5eSheet-resourcesPlus/master/module.json",
-	"download": "https://github.com/ardittristan/5eSheet-resourcesPlus/releases/download/latest/resources-plus.zip",
+	"download": "https://github.com/ardittristan/5eSheet-resourcesPlus/releases/latest/download/resources-plus.zip",
 	"minimumCoreVersion": "0.5.5",
 	"compatibleCoreVersion": "0.7.0",
-	"system": "dnd5e",
+	"systems": ["dnd5e"],
 	"styles": [
 		"./css/resources-plus.css"
 	]
