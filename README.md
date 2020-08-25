@@ -1,4 +1,4 @@
-![GitHub All Releases](https://img.shields.io/badge/dynamic/json?color=green&label=downloads&query=*&url=http%3A%2F%2Faws.ardittristan.xyz%3A9756%2FdownloadCount%2F5eSheet-resourcesPlus)
+![GitHub All Releases](https://img.shields.io/github/downloads/ardittristan/5eSheet-resourcesPlus/total)
 
 # 5e-Sheet Resources Plus
 
@@ -30,6 +30,8 @@ Check the [Changelog](https://github.com/ardittristan/5eSheet-resourcesPlus/blob
 &nbsp;
 
 ## Compability
+
+*If it doesn't work for you, first try to run the module with the libwrapper module enabled.*
 
 ### Compatible
 

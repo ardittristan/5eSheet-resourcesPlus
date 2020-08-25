@@ -59,34 +59,53 @@ Hooks.on('init', function () {
 
     // Monkeypatch original function
     const originalGetData = game.dnd5e.applications.ActorSheet5eCharacter.prototype.getData;
-    game.dnd5e.applications.ActorSheet5eCharacter.prototype.getData = function () {
-        const sheetData = originalGetData.call(this);
+    if (typeof libWrapper === "function") {
+        libWrapper.register('resourcesplus', 'game.dnd5e.applications.ActorSheet5eCharacter.prototype.getData', function(wrapper, ...args) {
+            const sheetData = originalGetData.call(this);
+            sheetData["resources"] = sheetResources.reduce((arr, r) => {
+                const res = sheetData.data.resources[r] || {};
+                res.name = r;
+                res.placeholder = game.i18n.localize("DND5E.Resource" + r.titleCase());
+                if (res && res.value === 0 && res.name != "count") delete res.value;
+                if (res && res.max === 0 && res.name != "count") delete res.max;
+                if (res && res.name === "count") { res.max = globalLimit; res.label = "Resource Count"; res.sr = false; res.lr = false; }
+                if (res && res.name === "count" && res.value === null) res.value = 3;
+                if (res && res.name === "count" && res.value > globalLimit) res.value = globalLimit;
+                return arr.concat([res]);
+            }, []);
+            wrapper.apply(this, args)
+            return sheetData
+        })
+    } else {
+        game.dnd5e.applications.ActorSheet5eCharacter.prototype.getData = function () {
+            const sheetData = originalGetData.call(this);
 
-        // Temporary HP
-        let hp = sheetData.data.attributes.hp;
-        if (hp.temp === 0) delete hp.temp;
-        if (hp.tempmax === 0) delete hp.tempmax;
+            // Temporary HP
+            let hp = sheetData.data.attributes.hp;
+            if (hp.temp === 0) delete hp.temp;
+            if (hp.tempmax === 0) delete hp.tempmax;
 
-        // Resources
-        sheetData["resources"] = sheetResources.reduce((arr, r) => {
-            const res = sheetData.data.resources[r] || {};
-            res.name = r;
-            res.placeholder = game.i18n.localize("DND5E.Resource" + r.titleCase());
-            if (res && res.value === 0 && res.name != "count") delete res.value;
-            if (res && res.max === 0 && res.name != "count") delete res.max;
-            if (res && res.name === "count") { res.max = globalLimit; res.label = "Resource Count"; res.sr = false; res.lr = false; }
-            if (res && res.name === "count" && res.value === null) res.value = 3;
-            if (res && res.name === "count" && res.value > globalLimit) res.value = globalLimit;
-            return arr.concat([res]);
-        }, []);
+            // Resources
+            sheetData["resources"] = sheetResources.reduce((arr, r) => {
+                const res = sheetData.data.resources[r] || {};
+                res.name = r;
+                res.placeholder = game.i18n.localize("DND5E.Resource" + r.titleCase());
+                if (res && res.value === 0 && res.name != "count") delete res.value;
+                if (res && res.max === 0 && res.name != "count") delete res.max;
+                if (res && res.name === "count") { res.max = globalLimit; res.label = "Resource Count"; res.sr = false; res.lr = false; }
+                if (res && res.name === "count" && res.value === null) res.value = 3;
+                if (res && res.name === "count" && res.value > globalLimit) res.value = globalLimit;
+                return arr.concat([res]);
+            }, []);
 
-        // Return data for rendering
-        // Experience Tracking
-        sheetData["disableExperience"] = game.settings.get("dnd5e", "disableExperienceTracking");
+            // Return data for rendering
+            // Experience Tracking
+            sheetData["disableExperience"] = game.settings.get("dnd5e", "disableExperienceTracking");
 
-        return sheetData;
+            return sheetData;
 
-    };
+        };
+    }
     /** @type {string[]} */
     var itemResources = [];
 
