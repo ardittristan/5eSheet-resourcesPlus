@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.5.8
+
+* Fix wrapper
+
 ## Version 1.5.7
 
 * Fix typo
