@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.5.7
+
+* Fix typo
+
 ## Version 1.5.6
 
 * Use libwrapper if available

@@ -1,7 +1,7 @@
 export function darkSheetCompat(sheetResources) {
     // Import dynamically so it doesn't throw errors when module is not installed.
     try {
-        import("./../../darksheet/actor/sheets/character.js")
+        import(game.modules.get('darksheet').path.match(/[\\/](?=modules)(.*)/g)[0].replace(/\\/g, "/") + "/actor/sheets/character.js")
             .then(imported => {
                 // Set class
                 const ActorSheet5eCharacter = imported.ActorSheet5eCharacter;

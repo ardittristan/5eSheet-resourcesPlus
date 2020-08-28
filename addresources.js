@@ -75,7 +75,7 @@ Hooks.on('init', function () {
             }, []);
             wrapper.apply(this, args)
             return sheetData
-        })
+        }, 'WRAPPER')
     } else {
         game.dnd5e.applications.ActorSheet5eCharacter.prototype.getData = function () {
             const sheetData = originalGetData.call(this);
