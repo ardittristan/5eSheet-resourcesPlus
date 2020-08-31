@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.5.9
+
+* Fix wrapper again
+
 ## Version 1.5.8
 
 * Fix wrapper
