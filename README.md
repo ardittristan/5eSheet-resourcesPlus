@@ -1,4 +1,5 @@
 ![GitHub All Releases](https://img.shields.io/github/downloads/ardittristan/5eSheet-resourcesPlus/total)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-Green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TF3LJHWV9U7HN)
 
 # 5e-Sheet Resources Plus
 
@@ -12,7 +13,7 @@ To install, import this [Manifest](https://raw.githubusercontent.com/ardittrista
 
 ## Usage
 
-A new resource box called "Resource Count" should appear on the character sheets. If you change the number in this box, the amount of visible resources changes. *(up to 20)*  
+A new resource box called "Resource Count" should appear on the character sheets. If you change the number in this box, the amount of visible resources changes. *(up to 20)*
 If you want to have the count be the same everywhere, you could change the local count, and if, as a dm, you want to limit all players to a certain max, you can change the global limit setting.
 
 &nbsp;

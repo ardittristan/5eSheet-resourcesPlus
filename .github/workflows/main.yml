@@ -1,6 +1,9 @@
 name: resources-plus CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
