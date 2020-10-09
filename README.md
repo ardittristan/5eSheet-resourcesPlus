@@ -42,6 +42,8 @@ Check the [Changelog](https://github.com/ardittristan/5eSheet-resourcesPlus/blob
 * [Tidy 5e](https://github.com/sdenec/tidy5e-sheet)
 * [darksheet 5e](https://github.com/Handyfon/Darksheet/tree/master)
 * [obsidian](https://bitbucket.org/Fyorl/obsidian) - *Doesn't have resources shown on sheet? I think?*
+* [Compact DnDBeyond-like 5e Character Sheet](https://github.com/ElfFriend-DnD/foundryvtt-compactBeyond5eSheet)
+* [D&D 5e OGL Character Sheet](https://github.com/ElfFriend-DnD/foundryvtt-5eOGLCharacterSheet)
 
 ### Incompatible
 
