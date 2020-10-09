@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.5.10
+
+* Fix es-ES
+
 ## Version 1.5.9
 
 * Fix wrapper again
