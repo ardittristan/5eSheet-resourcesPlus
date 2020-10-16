@@ -1,35 +1,35 @@
-@-moz-document url-prefix(){
-    .dnd5e.sheet.actor ul.attributes li.attribute.resource {
-        display: table;
-        width: 100px; 
-    }
-    
-    .dnd5e.sheet.actor ul.attributes li.attribute.initiative {
-        width: 80px;
-    }
+@-moz-document url-prefix() {
+  .dnd5e.sheet.actor ul.attributes li.attribute.resource {
+    display: table;
+    width: 100px;
+  }
 
-    .dnd5e.sheet.actor ul.attributes li.attribute.resource.count {
-        width: 110px !important;
-    }
+  .dnd5e.sheet.actor ul.attributes li.attribute.initiative {
+    width: 80px;
+  }
+
+  .dnd5e.sheet.actor ul.attributes li.attribute.resource.count {
+    width: 110px !important;
+  }
 }
 
 .dnd5e.sheet.actor ul.attributes li.attribute.resource {
-    display: table;
-    min-width: 100px; 
+  display: table;
+  min-width: 100px;
 }
 
 .dnd5e.sheet.actor ul.attributes li.attribute.initiative {
-    min-width: 80px;
+  min-width: 80px;
 }
 
 .attributes .attribute.resource:last-child {
-    width: 10px;
+  width: 10px;
 }
 
 .dnd5e.sheet.actor ul.attributes li.attribute.resource.hidden {
-    display: none !important;
+  display: none !important;
 }
 
 .dnd5e.sheet.actor ul.attributes li.attribute.resource.count {
-    min-width: 110px !important;
+  min-width: 110px !important;
 }
