@@ -40,6 +40,15 @@ Hooks.on('init', function () {
         type: Boolean
     });
 
+    game.settings.register("resourcesplus", "useNewSettingsLocation", {
+        name: "Use new settings location?",
+        hint: "When enabled moves the resource count setting to the sheet's settings.",
+        scope: "client",
+        config: true,
+        default: true,
+        type: Boolean
+    });
+
     // check migration
     if (!game.settings.get("resourcesplus", "migratedLocalLimit")) {
         if (game.settings.get("resourcesplus", "localLimit") === 0) {
@@ -135,6 +144,35 @@ Hooks.on('init', function () {
 
 });
 
+Hooks.on("renderEntitySheetConfig",
+/**@param {EntitySheetConfig} entity
+ * @param {JQuery} html*/
+function (entity, html) {
+    if (!game.settings.get("resourcesplus", "useNewSettingsLocation") || entity?.object?.data?.type !== "character") return;
+    // fix config height
+    html.height("auto")
+    // add element to config screen
+    $(`
+        <div class="form-group">
+            <label>${game.i18n.localize("DND5E.ResourceCount")}</label>
+            <input type="number" id="resourceCount" min="0" max="20" size="2" value="${entity?.object?.data?.data?.resources?.count?.value}">
+            <p class="notes">Set the max resource count</p>
+        </div>
+    `).insertAfter(html.find(".form-group:last-of-type"))
+
+    // handle submit
+    html.find("button[type=submit]").on("click", (e) => {
+        const oldValue = entity?.object?.data?.data?.resources?.count?.value;
+        const newValue = $(e.target.form).find("input#resourceCount").val();
+        if (oldValue !== undefined) {
+            entity.object.data.data.resources.count.value = newValue;
+            if (oldValue !== newValue) {
+                entity.object.sheet.render(false);
+            }
+        }
+    })
+})
+
 Hooks.on('renderActorSheet', function (dndSheet) {
     // Get all html elements that are resources
     var list = document.getElementsByClassName("attribute resource");
@@ -186,7 +224,11 @@ Hooks.on('renderActorSheet', function (dndSheet) {
                 }
 
                 if (resourceIndex == undefined) {
-                    item.setAttribute("class", "attribute resource count");
+                    if (game.settings.get("resourcesplus", "useNewSettingsLocation")) {
+                        item.setAttribute("class", "attribute resource hidden");
+                    } else {
+                        item.setAttribute("class", "attribute resource count");
+                    }
                 } else if ((!(item.className.includes("visible"))) && ((resourceIndex > countValue) || resourceIndex > countValue + (globalLimit / globalLimit + 1) * (i + 1))) {
                     item.setAttribute("class", "attribute resource hidden");
                 } else if (!(item.className.includes("hidden"))) {
