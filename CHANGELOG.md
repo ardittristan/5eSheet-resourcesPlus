@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.6.1
+
+* Push compatible core version.
+
 ## Version 1.6.0
 
 * Add new settings option, old option still available through foundry settings.
