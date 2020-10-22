@@ -3,7 +3,7 @@
 
 # 5e-Sheet Resources Plus
 
-This Module allows you to have add more resources to the 5e character sheet.
+Resouces Plus allows you to have up to 20 resource fields on actor sheets. These resources have the same functionality as the default resources. The max/shown amount can also be globally in the settings, or locally on the sheet itself.
 
 ## Installation
 
