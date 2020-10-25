@@ -186,6 +186,9 @@ Hooks.on(
 );
 
 Hooks.on("renderActorSheet", function (dndSheet) {
+  if (
+    dndSheet.constructor.name == "MonsterBlock5e"
+  ) return;
   // Get all html elements that are resources
   var list = document.getElementsByClassName("attribute resource");
   // Check if all resources should be visible
@@ -220,7 +223,7 @@ Hooks.on("renderActorSheet", function (dndSheet) {
         }
       }
     } catch (_) {
-      console.error("Sheet value not initialized yet, please change one resource value to update it.");
+      console.warn("Sheet value not initialized yet, please change one resource value to update it.");
     }
   } else {
     // Sometimes the sheet value isn't there yet
@@ -248,7 +251,7 @@ Hooks.on("renderActorSheet", function (dndSheet) {
         }
       }
     } catch (_) {
-      console.error("Sheet value not initialized yet, please change one resource value to update it.");
+      console.warn("Sheet value not initialized yet, please change one resource value to update it.");
     }
   }
 });

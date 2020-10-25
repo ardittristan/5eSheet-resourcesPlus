@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.6.2
+
+* Exclude monsterblocks.
+
 ## Version 1.6.1
 
 * Push compatible core version.
