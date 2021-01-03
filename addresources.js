@@ -73,7 +73,7 @@ Hooks.on("init", function () {
       "resourcesplus",
       "game.dnd5e.applications.ActorSheet5eCharacter.prototype.getData",
       function (wrapper, ...args) {
-        const sheetData = originalGetData.call(this);
+        const sheetData = wrapper(...args);
         sheetData["resources"] = sheetResources.reduce((arr, r) => {
           const res = sheetData.data.resources[r] || {};
           res.name = r;
@@ -90,7 +90,6 @@ Hooks.on("init", function () {
           if (res && res.name === "count" && res.value > globalLimit) res.value = globalLimit;
           return arr.concat([res]);
         }, []);
-        wrapper.apply(this, args);
         return sheetData;
       },
       "WRAPPER"
@@ -211,12 +210,12 @@ Hooks.on("renderActorSheet", function (dndSheet) {
         // Extract resource number from placeholder name
         var resourceIndex = item.innerHTML.match(/(?<=(\<h4)[\s\S]*(placeholder)(.*))([0-9]+)(?=[\s\S]*\<\/h4\>)/g);
         if (!(resourceIndex == undefined)) {
-          resourceIndex = resourceIndex[0];
+          resourceIndex = resourceIndex[0] * 1;
         }
 
         if (resourceIndex == undefined) {
           item.setAttribute("class", "attribute resource hidden");
-        } else if (!item.className.includes("visible") && (resourceIndex > countValue || resourceIndex > countValue + (globalLimit / globalLimit + 1) * (i + 1))) {
+        } else if (!item.className.includes("visible") && (resourceIndex > countValue || resourceIndex > countValue + (globalLimit / (globalLimit + 1)) * (i + 1))) {
           item.setAttribute("class", "attribute resource hidden");
         } else if (!item.className.includes("hidden")) {
           item.setAttribute("class", "attribute resource visible");
@@ -228,14 +227,14 @@ Hooks.on("renderActorSheet", function (dndSheet) {
   } else {
     // Sometimes the sheet value isn't there yet
     try {
-      var countValue = dndSheet.actor.data.data.resources.count.value;
+      var countValue = dndSheet.actor.data.data.resources.count.value * 1;
       var globalLimit = game.settings.get("resourcesplus", "globalLimit") || 20;
       for (var i = 0; i < list.length; i++) {
         var item = list[i];
         // Extract resource number from placeholder name
         var resourceIndex = item.innerHTML.match(/(?<=(\<h4)[\s\S]*(placeholder)(.*))([0-9]+)(?=[\s\S]*\<\/h4\>)/g);
         if (!(resourceIndex == undefined)) {
-          resourceIndex = resourceIndex[0];
+          resourceIndex = resourceIndex[0] * 1;
         }
 
         if (resourceIndex == undefined) {
@@ -244,7 +243,7 @@ Hooks.on("renderActorSheet", function (dndSheet) {
           } else {
             item.setAttribute("class", "attribute resource count");
           }
-        } else if (!item.className.includes("visible") && (resourceIndex > countValue || resourceIndex > countValue + (globalLimit / globalLimit + 1) * (i + 1))) {
+        } else if (!item.className.includes("visible") && (resourceIndex > countValue || resourceIndex > countValue + (globalLimit / (globalLimit + 1)) * (i + 1))) {
           item.setAttribute("class", "attribute resource hidden");
         } else if (!item.className.includes("hidden")) {
           item.setAttribute("class", "attribute resource visible");

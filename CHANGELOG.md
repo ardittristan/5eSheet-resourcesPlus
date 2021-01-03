@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.6.3
+
+* Several bugfixes.
+
 ## Version 1.6.2
 
 * Exclude monsterblocks.
