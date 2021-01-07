@@ -58,8 +58,8 @@ Hooks.on("init", function () {
   }
 
   // Init resource list + resource counter
-  var sheetResources = ["primary", "secondary", "tertiary", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "seventeenth", "eighteenth", "nineteenth", "twentieth", "count"];
-  var globalLimit = game.settings.get("resourcesplus", "globalLimit") || 20;
+  let sheetResources = ["primary", "secondary", "tertiary", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "seventeenth", "eighteenth", "nineteenth", "twentieth", "count"];
+  let globalLimit = game.settings.get("resourcesplus", "globalLimit") || 20;
   // if global mode is on, only enable required resources
   if (globalLimit != 20) {
     sheetResources = sheetResources.slice(0, globalLimit);
@@ -129,7 +129,7 @@ Hooks.on("init", function () {
     };
   }
   /** @type {string[]} */
-  var itemResources = [];
+  let itemResources = [];
 
   sheetResources.forEach((resource) => {
     if (!(resource === "count" || resource === "primary" || resource === "secondary" || resource === "tertiary")) {
@@ -184,41 +184,52 @@ Hooks.on(
   }
 );
 
-Hooks.on("renderActorSheet", function (dndSheet) {
+Hooks.on("renderActorSheet", /** @param dndSheet {ActorSheet} */ function (dndSheet) {
   if (
     dndSheet.constructor.name == "MonsterBlock5e"
   ) return;
   // Get all html elements that are resources
-  var list = document.getElementsByClassName("attribute resource");
+  let list = document.querySelectorAll(".attribute.resource");
+  let classes = "attribute resource";
+
+  // tidy5esheet compat
+  if (
+    dndSheet.constructor.name == "Tidy5eSheet"
+  ) {
+    list = document.querySelectorAll(".attributes .resources .resource");
+    classes = "resource"
+    console.log(list)
+  }
+
   // Check if all resources should be visible
   if (game.settings.get("resourcesplus", "showAll")) {
     for (let item of list) {
       // Check if resource is actually a resource and not the counter.
-      var resourceIndex = item.innerHTML.match(/(?<=(\<h4)[\s\S]*(placeholder)(.*))([0-9]+)(?=[\s\S]*\<\/h4\>)/g);
+      let resourceIndex = item.innerHTML.match(/(?<=(\<h4)[\s\S]*(placeholder)(.*))([0-9]+)(?=[\s\S]*\<\/h4\>)/g);
       if (resourceIndex == undefined) {
-        item.setAttribute("class", "attribute resource hidden");
+        item.setAttribute("class", classes + " hidden");
       } else {
-        item.setAttribute("class", "attribute resource");
+        item.setAttribute("class", classes + "");
       }
     }
   } else if (game.settings.get("resourcesplus", "localLimit") != -1) {
     try {
-      var countValue = game.settings.get("resourcesplus", "localLimit");
-      var globalLimit = game.settings.get("resourcesplus", "globalLimit") || 20;
-      for (var i = 0; i < list.length; i++) {
-        var item = list[i];
+      let countValue = game.settings.get("resourcesplus", "localLimit");
+      let globalLimit = game.settings.get("resourcesplus", "globalLimit") || 20;
+      for (let i = 0; i < list.length; i++) {
+        let item = list[i];
         // Extract resource number from placeholder name
-        var resourceIndex = item.innerHTML.match(/(?<=(\<h4)[\s\S]*(placeholder)(.*))([0-9]+)(?=[\s\S]*\<\/h4\>)/g);
+        let resourceIndex = item.innerHTML.match(/(?<=(\<h4)[\s\S]*(placeholder)(.*))([0-9]+)(?=[\s\S]*\<\/h4\>)/g);
         if (!(resourceIndex == undefined)) {
           resourceIndex = resourceIndex[0] * 1;
         }
 
         if (resourceIndex == undefined) {
-          item.setAttribute("class", "attribute resource hidden");
+          item.setAttribute("class", classes + " hidden");
         } else if (!item.className.includes("visible") && (resourceIndex > countValue || resourceIndex > countValue + (globalLimit / (globalLimit + 1)) * (i + 1))) {
-          item.setAttribute("class", "attribute resource hidden");
+          item.setAttribute("class", classes + " hidden");
         } else if (!item.className.includes("hidden")) {
-          item.setAttribute("class", "attribute resource visible");
+          item.setAttribute("class", classes + " visible");
         }
       }
     } catch (_) {
@@ -227,26 +238,26 @@ Hooks.on("renderActorSheet", function (dndSheet) {
   } else {
     // Sometimes the sheet value isn't there yet
     try {
-      var countValue = dndSheet.actor.data.data.resources.count.value * 1;
-      var globalLimit = game.settings.get("resourcesplus", "globalLimit") || 20;
-      for (var i = 0; i < list.length; i++) {
-        var item = list[i];
+      let countValue = dndSheet.actor.data.data.resources.count.value * 1;
+      let globalLimit = game.settings.get("resourcesplus", "globalLimit") || 20;
+      for (let i = 0; i < list.length; i++) {
+        let item = list[i];
         // Extract resource number from placeholder name
-        var resourceIndex = item.innerHTML.match(/(?<=(\<h4)[\s\S]*(placeholder)(.*))([0-9]+)(?=[\s\S]*\<\/h4\>)/g);
+        let resourceIndex = item.innerHTML.match(/(?<=(\<h4)[\s\S]*(placeholder)(.*))([0-9]+)(?=[\s\S]*\<\/h4\>)/g);
         if (!(resourceIndex == undefined)) {
           resourceIndex = resourceIndex[0] * 1;
         }
 
         if (resourceIndex == undefined) {
           if (game.settings.get("resourcesplus", "useNewSettingsLocation")) {
-            item.setAttribute("class", "attribute resource hidden");
+            item.setAttribute("class", classes + " hidden");
           } else {
-            item.setAttribute("class", "attribute resource count");
+            item.setAttribute("class", classes + " count");
           }
         } else if (!item.className.includes("visible") && (resourceIndex > countValue || resourceIndex > countValue + (globalLimit / (globalLimit + 1)) * (i + 1))) {
-          item.setAttribute("class", "attribute resource hidden");
+          item.setAttribute("class", classes + " hidden");
         } else if (!item.className.includes("hidden")) {
-          item.setAttribute("class", "attribute resource visible");
+          item.setAttribute("class", classes + " visible");
         }
       }
     } catch (_) {

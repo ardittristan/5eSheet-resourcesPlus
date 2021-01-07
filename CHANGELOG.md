@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.6.4
+
+* Add tidy5eSheet compatibility.
+
 ## Version 1.6.3
 
 * Several bugfixes.
