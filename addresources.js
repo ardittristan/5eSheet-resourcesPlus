@@ -184,21 +184,20 @@ Hooks.on(
   }
 );
 
-Hooks.on("renderActorSheet", /** @param dndSheet {ActorSheet} */ function (dndSheet) {
+Hooks.on("renderActorSheet", /** @param dndSheet {ActorSheet} @param html {JQuery} */ function (dndSheet, html) {
   if (
     dndSheet.constructor.name == "MonsterBlock5e"
   ) return;
   // Get all html elements that are resources
-  let list = document.querySelectorAll(".attribute.resource");
+  let list = html[0].querySelectorAll(".attribute.resource");
   let classes = "attribute resource";
 
   // tidy5esheet compat
   if (
     dndSheet.constructor.name == "Tidy5eSheet"
   ) {
-    list = document.querySelectorAll(".attributes .resources .resource");
-    classes = "resource"
-    console.log(list)
+    list = html[0].querySelectorAll(".attributes .resources .resource");
+    classes = "resource";
   }
 
   // Check if all resources should be visible
