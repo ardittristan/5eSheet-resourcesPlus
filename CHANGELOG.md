@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.6.6
+
+* No longer check when not a character sheet.
+
 ## Version 1.6.5
 
 * Add PopOut! compatibility.
