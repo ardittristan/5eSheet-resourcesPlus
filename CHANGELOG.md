@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.6.7
+
+* Fix backwards compatibility.
+
 ## Version 1.6.6
 
 * No longer check when not a character sheet.

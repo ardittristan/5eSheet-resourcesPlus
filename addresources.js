@@ -187,7 +187,7 @@ Hooks.on(
 Hooks.on("renderActorSheet", /** @param dndSheet {ActorSheet} @param html {JQuery} */ function (dndSheet, html) {
   if (
     dndSheet.constructor.name == "MonsterBlock5e" ||
-    dndSheet.actor.type !== "character"
+    dndSheet.actor.data.type !== "character"
   ) return;
   // Get all html elements that are resources
   let list = html[0].querySelectorAll(".attribute.resource");
