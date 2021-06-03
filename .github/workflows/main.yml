@@ -17,6 +17,12 @@ jobs:
       shell: bash
       id: get-version
       run: echo "::set-output name=version::$(node ./.github/workflows/get-version.js)"
+    - name: Substitute Manifest and Download Links For Versioned Ones
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: 'module.json'
+      env:
+        download: https://github.com/${{github.repository}}/releases/download/${{steps.get-version.outputs.version}}/resources-plus.zip
     - run: zip -r ./resources-plus.zip module.json addresources.js css/ lib/ lang/ compat/                                      # Add folders/files here
     - name: Create Release                                # Create an additional release for this version
       id: create_versioned_release
