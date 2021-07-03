@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.6.9
+
+- Add sw5e compat.
+
 ## Version 1.6.8
 
 - Fix attributes in item edit.

@@ -58,7 +58,29 @@ Hooks.on("init", function () {
   }
 
   // Init resource list + resource counter
-  let sheetResources = ["primary", "secondary", "tertiary", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "seventeenth", "eighteenth", "nineteenth", "twentieth", "count"];
+  let sheetResources = [
+    "primary",
+    "secondary",
+    "tertiary",
+    "fourth",
+    "fifth",
+    "sixth",
+    "seventh",
+    "eighth",
+    "ninth",
+    "tenth",
+    "eleventh",
+    "twelfth",
+    "thirteenth",
+    "fourteenth",
+    "fifteenth",
+    "sixteenth",
+    "seventeenth",
+    "eighteenth",
+    "nineteenth",
+    "twentieth",
+    "count",
+  ];
   let globalLimit = game.settings.get("resourcesplus", "globalLimit") || 20;
   // if global mode is on, only enable required resources
   if (globalLimit != 20) {
@@ -66,18 +88,28 @@ Hooks.on("init", function () {
     sheetResources.push("count");
   }
 
+  let actorSheetClassName = "ActorSheet5eCharacter";
+  if (game.system.id === "sw5e") {
+    actorSheetClassName += "New";
+    Hooks.once("ready", async () => {
+      window.resourcesPlusTranslations = await Localization.prototype._loadTranslationFile(
+        Localization.prototype._filterLanguagePaths(game.modules.get("resourcesplus"), "en")
+      );
+    });
+  }
+
   // Monkeypatch original function
-  const originalGetData = game.dnd5e.applications.ActorSheet5eCharacter.prototype.getData;
+  const originalGetData = game[game.system.id].applications[actorSheetClassName].prototype.getData;
   if (typeof libWrapper === "function") {
     libWrapper.register(
       "resourcesplus",
-      "game.dnd5e.applications.ActorSheet5eCharacter.prototype.getData",
+      `game.${game.system.id}.applications.${actorSheetClassName}.prototype.getData`,
       function (wrapper, ...args) {
         const sheetData = wrapper(...args);
         sheetData["resources"] = sheetResources.reduce((arr, r) => {
           const res = sheetData.data.resources[r] || {};
           res.name = r;
-          res.placeholder = game.i18n.localize("DND5E.Resource" + r.titleCase());
+          res.placeholder = game.i18n.translations.DND5E["Resource" + r.titleCase()] || window.resourcesPlusTranslations.DND5E["Resource" + r.titleCase()];
           if (res && res.value === 0 && res.name != "count") delete res.value;
           if (res && res.max === 0 && res.name != "count") delete res.max;
           if (res && res.name === "count") {
@@ -95,7 +127,7 @@ Hooks.on("init", function () {
       "WRAPPER"
     );
   } else {
-    game.dnd5e.applications.ActorSheet5eCharacter.prototype.getData = function () {
+    game[game.system.id].applications[actorSheetClassName].prototype.getData = function () {
       const sheetData = originalGetData.call(this);
 
       // Temporary HP
@@ -107,7 +139,7 @@ Hooks.on("init", function () {
       sheetData["resources"] = sheetResources.reduce((arr, r) => {
         const res = sheetData.data.resources[r] || {};
         res.name = r;
-        res.placeholder = game.i18n.localize("DND5E.Resource" + r.titleCase());
+        res.placeholder = game.i18n.translations.DND5E["Resource" + r.titleCase()] || window.resourcesPlusTranslations.DND5E["Resource" + r.titleCase()];
         if (res && res.value === 0 && res.name != "count") delete res.value;
         if (res && res.max === 0 && res.name != "count") delete res.max;
         if (res && res.name === "count") {
@@ -123,8 +155,14 @@ Hooks.on("init", function () {
 
       // Return data for rendering
       // Experience Tracking
-      sheetData["disableExperience"] = game.settings.get("dnd5e", "disableExperienceTracking");
-
+      sheetData["disableExperience"] = game.settings.get(game.system.id, "disableExperienceTracking");
+      if (game.system.id === "sw5e") {
+        sheetData["multiclassLabels"] = this.actor.itemTypes.class
+          .map((c) => {
+            return [c.data.data.archetype, c.name, c.data.data.levels].filterJoin(" ");
+          })
+          .join(", ");
+      }
       return sheetData;
     };
   }
@@ -164,7 +202,7 @@ Hooks.on(
     // add element to config screen
     $(`
         <div class="form-group">
-            <label>${game.i18n.localize("DND5E.ResourceCount")}</label>
+            <label>${game.i18n.translations.DND5E.ResourceCount || window.resourcesPlusTranslations.DND5E.ResourceCount}</label>
             <input type="number" id="resourceCount" min="0" max="20" size="2" value="${entity?.object?.data?.data?.resources?.count?.value}">
             <p class="notes">Set the max resource count</p>
         </div>
@@ -184,84 +222,84 @@ Hooks.on(
   }
 );
 
-Hooks.on("renderActorSheet", /** @param dndSheet {ActorSheet} @param html {JQuery} */ function (dndSheet, html) {
-  if (
-    dndSheet.constructor.name == "MonsterBlock5e" ||
-    dndSheet.actor.data.type !== "character"
-  ) return;
-  // Get all html elements that are resources
-  let list = html[0].querySelectorAll(".attribute.resource");
-  let classes = "attribute resource";
+Hooks.on(
+  "renderActorSheet",
+  /** @param dndSheet {ActorSheet} @param html {JQuery} */ function (dndSheet, html) {
+    if (dndSheet.constructor.name == "MonsterBlock5e" || dndSheet.actor.data.type !== "character") return;
+    // Get all html elements that are resources
+    let list = html[0].querySelectorAll(".attribute.resource");
+    let classes = "attribute resource";
 
-  // tidy5esheet compat
-  if (
-    dndSheet.constructor.name == "Tidy5eSheet"
-  ) {
-    list = html[0].querySelectorAll(".attributes .resources .resource");
-    classes = "resource";
-  }
-
-  // Check if all resources should be visible
-  if (game.settings.get("resourcesplus", "showAll")) {
-    for (let item of list) {
-      // Check if resource is actually a resource and not the counter.
-      let resourceIndex = item.innerHTML.match(/(?<=(\<h4)[\s\S]*(placeholder)(.*))([0-9]+)(?=[\s\S]*\<\/h4\>)/g);
-      if (resourceIndex == undefined) {
-        item.setAttribute("class", classes + " hidden");
-      } else {
-        item.setAttribute("class", classes + "");
-      }
+    // tidy5esheet compat
+    if (dndSheet.constructor.name == "Tidy5eSheet" || game.system.id == "sw5e") {
+      list = html[0].querySelectorAll(".attributes .resources .resource");
+      classes = "resource";
     }
-  } else if (game.settings.get("resourcesplus", "localLimit") != -1) {
-    try {
-      let countValue = game.settings.get("resourcesplus", "localLimit");
-      let globalLimit = game.settings.get("resourcesplus", "globalLimit") || 20;
-      for (let i = 0; i < list.length; i++) {
-        let item = list[i];
-        // Extract resource number from placeholder name
-        let resourceIndex = item.innerHTML.match(/(?<=(\<h4)[\s\S]*(placeholder)(.*))([0-9]+)(?=[\s\S]*\<\/h4\>)/g);
-        if (!(resourceIndex == undefined)) {
-          resourceIndex = resourceIndex[0] * 1;
-        }
 
+    // Check if all resources should be visible
+    if (game.settings.get("resourcesplus", "showAll")) {
+      for (let item of list) {
+        // Check if resource is actually a resource and not the counter.
+        let resourceIndex = item.innerHTML.match(/(?<=(\<h4)[\s\S]*(placeholder)(.*))([0-9]+)(?=[\s\S]*\<\/h4\>)/g);
         if (resourceIndex == undefined) {
           item.setAttribute("class", classes + " hidden");
-        } else if (!item.className.includes("visible") && (resourceIndex > countValue || resourceIndex > countValue + (globalLimit / (globalLimit + 1)) * (i + 1))) {
-          item.setAttribute("class", classes + " hidden");
-        } else if (!item.className.includes("hidden")) {
-          item.setAttribute("class", classes + " visible");
+        } else {
+          item.setAttribute("class", classes + "");
         }
       }
-    } catch (_) {
-      console.warn("Sheet value not initialized yet, please change one resource value to update it.");
-    }
-  } else {
-    // Sometimes the sheet value isn't there yet
-    try {
-      let countValue = dndSheet.actor.data.data.resources.count.value * 1;
-      let globalLimit = game.settings.get("resourcesplus", "globalLimit") || 20;
-      for (let i = 0; i < list.length; i++) {
-        let item = list[i];
-        // Extract resource number from placeholder name
-        let resourceIndex = item.innerHTML.match(/(?<=(\<h4)[\s\S]*(placeholder)(.*))([0-9]+)(?=[\s\S]*\<\/h4\>)/g);
-        if (!(resourceIndex == undefined)) {
-          resourceIndex = resourceIndex[0] * 1;
-        }
-
-        if (resourceIndex == undefined) {
-          if (game.settings.get("resourcesplus", "useNewSettingsLocation")) {
-            item.setAttribute("class", classes + " hidden");
-          } else {
-            item.setAttribute("class", classes + " count");
+    } else if (game.settings.get("resourcesplus", "localLimit") != -1) {
+      try {
+        let countValue = game.settings.get("resourcesplus", "localLimit");
+        let globalLimit = game.settings.get("resourcesplus", "globalLimit") || 20;
+        for (let i = 0; i < list.length; i++) {
+          let item = list[i];
+          // Extract resource number from placeholder name
+          let resourceIndex = item.innerHTML.match(/(?<=(\<h4)[\s\S]*(placeholder)(.*))([0-9]+)(?=[\s\S]*\<\/h4\>)/g);
+          if (!(resourceIndex == undefined)) {
+            resourceIndex = resourceIndex[0] * 1;
           }
-        } else if (!item.className.includes("visible") && (resourceIndex > countValue || resourceIndex > countValue + (globalLimit / (globalLimit + 1)) * (i + 1))) {
-          item.setAttribute("class", classes + " hidden");
-        } else if (!item.className.includes("hidden")) {
-          item.setAttribute("class", classes + " visible");
+
+          if (resourceIndex == undefined) {
+            item.setAttribute("class", classes + " hidden");
+          } else if (!item.className.includes("visible") && (resourceIndex > countValue || resourceIndex > countValue + (globalLimit / (globalLimit + 1)) * (i + 1))) {
+            item.setAttribute("class", classes + " hidden");
+          } else if (!item.className.includes("hidden")) {
+            item.setAttribute("class", classes + " visible");
+          }
         }
+      } catch (e) {
+        console.warn("Sheet value not initialized yet, please change one resource value to update it.");
+        console.debug(e);
       }
-    } catch (_) {
-      console.warn("Sheet value not initialized yet, please change one resource value to update it.");
+    } else {
+      // Sometimes the sheet value isn't there yet
+      try {
+        let countValue = dndSheet.actor.data.data.resources.count.value * 1;
+        let globalLimit = game.settings.get("resourcesplus", "globalLimit") || 20;
+        for (let i = 0; i < list.length; i++) {
+          let item = list[i];
+          // Extract resource number from placeholder name
+          let resourceIndex = item.innerHTML.match(/(?<=(\<h[4,1])[\s\S]*(placeholder)(.*))([0-9]+)(?=[\s\S]*\<\/h[4,1]\>)/g);
+          if (!(resourceIndex == undefined)) {
+            resourceIndex = resourceIndex[0] * 1;
+          }
+
+          if (resourceIndex == undefined) {
+            if (game.settings.get("resourcesplus", "useNewSettingsLocation")) {
+              item.setAttribute("class", classes + " hidden");
+            } else {
+              item.setAttribute("class", classes + " count");
+            }
+          } else if (!item.className.includes("visible") && (resourceIndex > countValue || resourceIndex > countValue + (globalLimit / (globalLimit + 1)) * (i + 1))) {
+            item.setAttribute("class", classes + " hidden");
+          } else if (!item.className.includes("hidden")) {
+            item.setAttribute("class", classes + " visible");
+          }
+        }
+      } catch (e) {
+        console.warn("Sheet value not initialized yet, please change one resource value to update it.");
+        console.debug(e);
+      }
     }
   }
-});
+);

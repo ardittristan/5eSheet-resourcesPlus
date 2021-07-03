@@ -2,7 +2,7 @@
   "name": "resourcesplus",
   "title": "5e-Sheet Resources Plus",
   "description": "A module that allows you to add more resources to character sheets",
-  "version": "1.6.8",
+  "version": "1.6.9",
   "author": "ardittristan#0001",
   "esmodules": ["addresources.js"],
   "languages": [
@@ -27,7 +27,7 @@
   "manifest": "https://raw.githubusercontent.com/ardittristan/5eSheet-resourcesPlus/master/module.json",
   "download": "https://github.com/ardittristan/5eSheet-resourcesPlus/releases/latest/download/resources-plus.zip",
   "minimumCoreVersion": "0.5.5",
-  "compatibleCoreVersion": "0.8.2",
-  "systems": ["dnd5e"],
+  "compatibleCoreVersion": "0.8.8",
+  "systems": ["dnd5e", "sw5e"],
   "styles": ["./css/resources-plus.css", "./compat/tidy5eSheetCompat.css"]
 }
