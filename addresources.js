@@ -109,7 +109,11 @@ Hooks.on("init", function () {
         sheetData["resources"] = sheetResources.reduce((arr, r) => {
           const res = sheetData.data.resources[r] || {};
           res.name = r;
-          res.placeholder = game.i18n.translations.DND5E["Resource" + r.titleCase()] || window.resourcesPlusTranslations.DND5E["Resource" + r.titleCase()];
+          try {
+            res.placeholder = game.i18n.translations.DND5E["Resource" + r.titleCase()] || window.resourcesPlusTranslations.DND5E["Resource" + r.titleCase()];
+          } catch (_e) {
+            res.placeholder = game.i18n.localize("DND5E.Resource" + r.titleCase());
+          }
           if (res && res.value === 0 && res.name != "count") delete res.value;
           if (res && res.max === 0 && res.name != "count") delete res.max;
           if (res && res.name === "count") {
@@ -139,7 +143,11 @@ Hooks.on("init", function () {
       sheetData["resources"] = sheetResources.reduce((arr, r) => {
         const res = sheetData.data.resources[r] || {};
         res.name = r;
-        res.placeholder = game.i18n.translations.DND5E["Resource" + r.titleCase()] || window.resourcesPlusTranslations.DND5E["Resource" + r.titleCase()];
+        try {
+          res.placeholder = game.i18n.translations.DND5E["Resource" + r.titleCase()] || window.resourcesPlusTranslations.DND5E["Resource" + r.titleCase()];
+        } catch (_e) {
+          res.placeholder = game.i18n.localize("DND5E.Resource" + r.titleCase());
+        }
         if (res && res.value === 0 && res.name != "count") delete res.value;
         if (res && res.max === 0 && res.name != "count") delete res.max;
         if (res && res.name === "count") {

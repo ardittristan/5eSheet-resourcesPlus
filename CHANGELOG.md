@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.6.10
+
+- Hotfix.
+
 ## Version 1.6.9
 
 - Add sw5e compat.
