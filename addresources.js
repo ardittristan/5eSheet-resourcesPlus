@@ -210,7 +210,9 @@ Hooks.on(
     // add element to config screen
     $(`
         <div class="form-group">
-            <label>${game.i18n.translations.DND5E.ResourceCount || window.resourcesPlusTranslations.DND5E.ResourceCount}</label>
+            <label>${
+              game.i18n.translations?.DND5E?.ResourceCount || window.resourcesPlusTranslations?.DND5E?.ResourceCount || game.i18n.localize("DND5E.ResourceCount")
+            }</label>
             <input type="number" id="resourceCount" min="0" max="20" size="2" value="${entity?.object?.data?.data?.resources?.count?.value}">
             <p class="notes">Set the max resource count</p>
         </div>

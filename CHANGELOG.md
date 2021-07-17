@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.6.11
+
+- Fix regression caused by sw5e compat, making resource count settings not work.
+
 ## Version 1.6.10
 
 - Hotfix.
