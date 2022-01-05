@@ -199,16 +199,16 @@ Hooks.on("init", function () {
   });
 });
 
-Hooks.on(
-  "renderEntitySheetConfig",
-  /**@param {EntitySheetConfig} entity
-   * @param {JQuery} html*/
-  function (entity, html) {
-    if (!game.settings.get("resourcesplus", "useNewSettingsLocation") || entity?.object?.data?.type !== "character") return;
-    // fix config height
-    html.height("auto");
-    // add element to config screen
-    $(`
+/**
+ * @param {EntitySheetConfig} entity
+ * @param {JQuery} html
+ */
+function renderEntitySheetConfig(entity, html) {
+  if (!game.settings.get("resourcesplus", "useNewSettingsLocation") || entity?.object?.data?.type !== "character") return;
+  // fix config height
+  html.height("auto");
+  // add element to config screen
+  $(`
         <div class="form-group">
             <label>${
               game.i18n.translations?.DND5E?.ResourceCount || window.resourcesPlusTranslations?.DND5E?.ResourceCount || game.i18n.localize("DND5E.ResourceCount")
@@ -218,19 +218,21 @@ Hooks.on(
         </div>
     `).insertAfter(html.find(".form-group:last-of-type"));
 
-    // handle submit
-    html.find("button[type=submit]").on("click", (e) => {
-      const oldValue = entity?.object?.data?.data?.resources?.count?.value;
-      const newValue = $(e.target.form).find("input#resourceCount").val();
-      if (oldValue !== undefined) {
-        entity.object.data.data.resources.count.value = newValue;
-        if (oldValue !== newValue) {
-          entity.object.sheet.render(false);
-        }
+  // handle submit
+  html.find("button[type=submit]").on("click", (e) => {
+    const oldValue = entity?.object?.data?.data?.resources?.count?.value;
+    const newValue = $(e.target.form).find("input#resourceCount").val();
+    if (oldValue !== undefined) {
+      entity.object.data.data.resources.count.value = newValue;
+      if (oldValue !== newValue) {
+        entity.object.sheet.render(false);
       }
-    });
-  }
-);
+    }
+  });
+}
+
+Hooks.on("renderEntitySheetConfig", renderEntitySheetConfig);
+Hooks.on("renderDocumentSheetConfig", renderEntitySheetConfig);
 
 Hooks.on(
   "renderActorSheet",
