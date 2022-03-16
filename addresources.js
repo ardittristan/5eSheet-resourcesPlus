@@ -180,6 +180,12 @@ Hooks.on("init", function () {
   sheetResources.forEach((resource) => {
     if (!(resource === "count" || resource === "primary" || resource === "secondary" || resource === "tertiary")) {
       itemResources.push(`resources.${resource}.value`);
+      game.system.model.Actor.character.resources[resource] = {
+        lr: 0,
+        max: 0,
+        sr: 0,
+        value: 0,
+      };
     }
   });
 
