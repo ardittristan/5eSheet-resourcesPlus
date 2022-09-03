@@ -1,41 +1,41 @@
 {
-  "name": "resourcesplus",
   "title": "5e-Sheet Resources Plus",
   "description": "A module that allows you to add more resources to character sheets",
-  "author": "ardittristan#0001",
-  "authors": [],
   "url": "https://github.com/ardittristan/5eSheet-resourcesPlus/tree/master",
-  "flags": {},
-  "version": "1.6.14",
-  "minimumCoreVersion": "0.5.5",
-  "compatibleCoreVersion": "9.238",
-  "scripts": [],
-  "esmodules": ["addresources.js"],
-  "styles": ["./css/resources-plus.css", "./compat/tidy5eSheetCompat.css"],
+  "version": "1.7.0",
+  "esmodules": [
+    "addresources.js"
+  ],
+  "styles": [
+    "css/resources-plus.css",
+    "compat/tidy5eSheetCompat.css"
+  ],
   "languages": [
     {
       "lang": "en",
       "name": "English",
-      "path": "lang/en.json"
+      "path": "lang/en.json",
+      "flags": {}
     },
     {
       "lang": "pt-BR",
       "name": "Português do Brasil",
-      "path": "lang/pt-BR.json"
+      "path": "lang/pt-BR.json",
+      "flags": {}
     },
     {
       "lang": "es-ES",
       "name": "Castellano",
-      "path": "lang/es-ES.json"
+      "path": "lang/es-ES.json",
+      "flags": {}
     }
   ],
-  "packs": [],
-  "system": ["dnd5e", "sw5e"],
-  "dependencies": [],
   "socket": true,
   "manifest": "https://raw.githubusercontent.com/ardittristan/5eSheet-resourcesPlus/master/module.json",
   "download": "https://github.com/ardittristan/5eSheet-resourcesPlus/releases/latest/download/resources-plus.zip",
-  "protected": false,
-  "coreTranslation": false,
-  "library": false
+  "id": "resourcesplus",
+  "compatibility": {
+    "minimum": 10,
+    "verified": 10
+  }
 }

@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.7.0
+
+- Update for V10.
+
 ## Version 1.6.13
 
 - Also add resources to system model on init. Should fix token resources not being editable.

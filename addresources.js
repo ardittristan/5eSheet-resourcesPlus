@@ -99,15 +99,15 @@ Hooks.on("init", function () {
   }
 
   // Monkeypatch original function
-  const originalGetData = game[game.system.id].applications[actorSheetClassName].prototype.getData;
+  const originalGetData = game[game.system.id].applications.actor[actorSheetClassName].prototype.getData;
   if (typeof libWrapper === "function") {
     libWrapper.register(
       "resourcesplus",
-      `game.${game.system.id}.applications.${actorSheetClassName}.prototype.getData`,
-      function (wrapper, ...args) {
-        const sheetData = wrapper(...args);
+      `game.${game.system.id}.applications.actor.${actorSheetClassName}.prototype.getData`,
+      async function (wrapper, ...args) {
+        const sheetData = await wrapper(...args);
         sheetData["resources"] = sheetResources.reduce((arr, r) => {
-          const res = sheetData.data.resources[r] || {};
+          const res = sheetData.actor.system.resources[r] || {};
           res.name = r;
           try {
             res.placeholder = game.i18n.translations.DND5E["Resource" + r.titleCase()] || window.resourcesPlusTranslations.DND5E["Resource" + r.titleCase()];
@@ -131,17 +131,12 @@ Hooks.on("init", function () {
       "WRAPPER"
     );
   } else {
-    game[game.system.id].applications[actorSheetClassName].prototype.getData = function () {
-      const sheetData = originalGetData.call(this);
-
-      // Temporary HP
-      let hp = sheetData.data.attributes.hp;
-      if (hp.temp === 0) delete hp.temp;
-      if (hp.tempmax === 0) delete hp.tempmax;
+    game[game.system.id].applications.actor[actorSheetClassName].prototype.getData = async function () {
+      const sheetData = await originalGetData.call(this);
 
       // Resources
       sheetData["resources"] = sheetResources.reduce((arr, r) => {
-        const res = sheetData.data.resources[r] || {};
+        const res = sheetData.actor.system.resources[r] || {};
         res.name = r;
         try {
           res.placeholder = game.i18n.translations.DND5E["Resource" + r.titleCase()] || window.resourcesPlusTranslations.DND5E["Resource" + r.titleCase()];
@@ -161,17 +156,13 @@ Hooks.on("init", function () {
         return arr.concat([res]);
       }, []);
 
-      // Return data for rendering
-      // Experience Tracking
-      sheetData["disableExperience"] = game.settings.get(game.system.id, "disableExperienceTracking");
-      if (game.system.id === "sw5e") {
-        sheetData["multiclassLabels"] = this.actor.itemTypes.class
-          .map((c) => {
-            return [c.data.data.archetype, c.name, c.data.data.levels].filterJoin(" ");
-          })
-          .join(", ");
-      }
-      return sheetData;
+      const classes = this.actor.itemTypes.class;
+      return foundry.utils.mergeObject(sheetData, {
+        disableExperience: game.settings.get("dnd5e", "disableExperienceTracking"),
+        classLabels: classes.map((c) => c.name).join(", "),
+        multiclassLabels: classes.map((c) => [c.subclass?.name ?? "", c.name, c.system.levels].filterJoin(" ")).join(", "),
+        weightUnit: game.i18n.localize(`DND5E.Abbreviation${game.settings.get("dnd5e", "metricWeightUnits") ? "Kgs" : "Lbs"}`),
+      });
     };
   }
   /** @type {string[]} */
@@ -210,7 +201,7 @@ Hooks.on("init", function () {
  * @param {JQuery} html
  */
 function renderEntitySheetConfig(entity, html) {
-  if (!game.settings.get("resourcesplus", "useNewSettingsLocation") || entity?.object?.data?.type !== "character") return;
+  if (!game.settings.get("resourcesplus", "useNewSettingsLocation") || entity?.object?.type !== "character") return;
   // fix config height
   html.height("auto");
   // add element to config screen
@@ -219,17 +210,17 @@ function renderEntitySheetConfig(entity, html) {
             <label>${
               game.i18n.translations?.DND5E?.ResourceCount || window.resourcesPlusTranslations?.DND5E?.ResourceCount || game.i18n.localize("DND5E.ResourceCount")
             }</label>
-            <input type="number" id="resourceCount" min="0" max="20" size="2" value="${entity?.object?.data?.data?.resources?.count?.value}">
+            <input type="number" id="resourceCount" min="0" max="20" size="2" value="${entity?.object?.system?.resources?.count?.value}">
             <p class="notes">Set the max resource count</p>
         </div>
     `).insertAfter(html.find(".form-group:last-of-type"));
 
   // handle submit
   html.find("button[type=submit]").on("click", (e) => {
-    const oldValue = entity?.object?.data?.data?.resources?.count?.value;
+    const oldValue = entity?.object?.system?.resources?.count?.value;
     const newValue = $(e.target.form).find("input#resourceCount").val();
     if (oldValue !== undefined) {
-      entity.object.data.data.resources.count.value = newValue;
+      entity.object.system.resources.count.value = newValue;
       if (oldValue !== newValue) {
         entity.object.sheet.render(false);
       }
@@ -243,7 +234,7 @@ Hooks.on("renderDocumentSheetConfig", renderEntitySheetConfig);
 Hooks.on(
   "renderActorSheet",
   /** @param dndSheet {ActorSheet} @param html {JQuery} */ function (dndSheet, html) {
-    if (dndSheet.constructor.name == "MonsterBlock5e" || dndSheet.actor.data.type !== "character") return;
+    if (dndSheet.constructor.name == "MonsterBlock5e" || dndSheet.actor.type !== "character") return;
     // Get all html elements that are resources
     let list = html[0].querySelectorAll(".attribute.resource");
     let classes = "attribute resource";
@@ -292,7 +283,8 @@ Hooks.on(
     } else {
       // Sometimes the sheet value isn't there yet
       try {
-        let countValue = dndSheet.actor.data.data.resources.count.value * 1;
+        console.log(dndSheet)
+        let countValue = dndSheet.actor.system.resources.count.value * 1;
         let globalLimit = game.settings.get("resourcesplus", "globalLimit") || 20;
         for (let i = 0; i < list.length; i++) {
           let item = list[i];
