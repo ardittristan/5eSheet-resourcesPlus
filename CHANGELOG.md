@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.8.0
+
+- Update for dnd5e v2.1.0+
+
 ## Version 1.7.0
 
 - Update for V10.

@@ -99,42 +99,12 @@ Hooks.on("init", function () {
   }
 
   // Monkeypatch original function
-  const originalGetData = game[game.system.id].applications.actor[actorSheetClassName].prototype.getData;
-  if (typeof libWrapper === "function") {
-    libWrapper.register(
-      "resourcesplus",
-      `game.${game.system.id}.applications.actor.${actorSheetClassName}.prototype.getData`,
-      async function (wrapper, ...args) {
-        const sheetData = await wrapper(...args);
-        sheetData["resources"] = sheetResources.reduce((arr, r) => {
-          const res = sheetData.actor.system.resources[r] || {};
-          res.name = r;
-          try {
-            res.placeholder = game.i18n.translations.DND5E["Resource" + r.titleCase()] || window.resourcesPlusTranslations.DND5E["Resource" + r.titleCase()];
-          } catch (_e) {
-            res.placeholder = game.i18n.localize("DND5E.Resource" + r.titleCase());
-          }
-          if (res && res.value === 0 && res.name != "count") delete res.value;
-          if (res && res.max === 0 && res.name != "count") delete res.max;
-          if (res && res.name === "count") {
-            res.max = globalLimit;
-            res.label = "Resource Count";
-            res.sr = false;
-            res.lr = false;
-          }
-          if (res && res.name === "count" && res.value === null) res.value = 3;
-          if (res && res.name === "count" && res.value > globalLimit) res.value = globalLimit;
-          return arr.concat([res]);
-        }, []);
-        return sheetData;
-      },
-      "WRAPPER"
-    );
-  } else {
-    game[game.system.id].applications.actor[actorSheetClassName].prototype.getData = async function () {
-      const sheetData = await originalGetData.call(this);
 
-      // Resources
+  libWrapper.register(
+    "resourcesplus",
+    `game.${game.system.id}.applications.actor.${actorSheetClassName}.prototype.getData`,
+    async function (wrapper, ...args) {
+      const sheetData = await wrapper(...args);
       sheetData["resources"] = sheetResources.reduce((arr, r) => {
         const res = sheetData.actor.system.resources[r] || {};
         res.name = r;
@@ -155,16 +125,11 @@ Hooks.on("init", function () {
         if (res && res.name === "count" && res.value > globalLimit) res.value = globalLimit;
         return arr.concat([res]);
       }, []);
+      return sheetData;
+    },
+    "WRAPPER"
+  );
 
-      const classes = this.actor.itemTypes.class;
-      return foundry.utils.mergeObject(sheetData, {
-        disableExperience: game.settings.get("dnd5e", "disableExperienceTracking"),
-        classLabels: classes.map((c) => c.name).join(", "),
-        multiclassLabels: classes.map((c) => [c.subclass?.name ?? "", c.name, c.system.levels].filterJoin(" ")).join(", "),
-        weightUnit: game.i18n.localize(`DND5E.Abbreviation${game.settings.get("dnd5e", "metricWeightUnits") ? "Kgs" : "Lbs"}`),
-      });
-    };
-  }
   /** @type {string[]} */
   let itemResources = [];
 
@@ -179,6 +144,67 @@ Hooks.on("init", function () {
       };
     }
   });
+
+  function makeResourceField(schemaOptions = {}) {
+    return new foundry.data.fields.SchemaField(
+      {
+        value: new foundry.data.fields.NumberField({
+          required: true,
+          integer: true,
+          initial: 0,
+          labels: "DND5E.ResourceValue",
+        }),
+        max: new foundry.data.fields.NumberField({
+          required: true,
+          integer: true,
+          initial: 0,
+          labels: "DND5E.ResourceMax",
+        }),
+        sr: new foundry.data.fields.BooleanField({ required: true, labels: "DND5E.ShortRestRecovery" }),
+        lr: new foundry.data.fields.BooleanField({ required: true, labels: "DND5E.LongRestRecovery" }),
+        label: new foundry.data.fields.StringField({ required: true, labels: "DND5E.ResourceLabel" }),
+      },
+      schemaOptions
+    );
+  }
+
+  libWrapper.register(
+    "resourcesplus",
+    `game.system.dataModels.actor.CharacterData.defineSchema`,
+    function (wrapper, ...args) {
+      const schema = wrapper(...args);
+
+      return this.mergeSchema(schema, {
+        resources: new foundry.data.fields.SchemaField(
+          {
+            primary: makeResourceField({ label: "DND5E.ResourcePrimary" }),
+            secondary: makeResourceField({ label: "DND5E.ResourceSecondary" }),
+            tertiary: makeResourceField({ label: "DND5E.ResourceTertiary" }),
+            fourth: makeResourceField({ label: "DND5E.ResourceFourth" }),
+            fifth: makeResourceField({ label: "DND5E.ResourceFifth" }),
+            sixth: makeResourceField({ label: "DND5E.ResourceSixth" }),
+            seventh: makeResourceField({ label: "DND5E.ResourceSeventh" }),
+            eighth: makeResourceField({ label: "DND5E.ResourceEighth" }),
+            ninth: makeResourceField({ label: "DND5E.ResourceNinth" }),
+            tenth: makeResourceField({ label: "DND5E.ResourceTenth" }),
+            eleventh: makeResourceField({ label: "DND5E.ResourceEleventh" }),
+            twelfth: makeResourceField({ label: "DND5E.ResourceTwelfth" }),
+            thirteenth: makeResourceField({ label: "DND5E.ResourceThirteenth" }),
+            fourteenth: makeResourceField({ label: "DND5E.ResourceFourteenth" }),
+            fifteenth: makeResourceField({ label: "DND5E.ResourceFifteenth" }),
+            sixteenth: makeResourceField({ label: "DND5E.ResourceSixteenth" }),
+            seventeenth: makeResourceField({ label: "DND5E.ResourceSeventeenth" }),
+            eighteenth: makeResourceField({ label: "DND5E.ResourceEighteenth" }),
+            nineteenth: makeResourceField({ label: "DND5E.ResourceNineteenth" }),
+            twentieth: makeResourceField({ label: "DND5E.ResourceTwentieth" }),
+            count: makeResourceField({ label: "DND5E.ResourceCount" }),
+          },
+          { label: "DND5E.Resources" }
+        ),
+      });
+    },
+    "WRAPPER"
+  );
 
   // Monkeypatch item sheet list so it shows up under the resources for items/spells
   monkeypatchSheet(itemResources);
@@ -283,7 +309,6 @@ Hooks.on(
     } else {
       // Sometimes the sheet value isn't there yet
       try {
-        console.log(dndSheet)
         let countValue = dndSheet.actor.system.resources.count.value * 1;
         let globalLimit = game.settings.get("resourcesplus", "globalLimit") || 20;
         for (let i = 0; i < list.length; i++) {
