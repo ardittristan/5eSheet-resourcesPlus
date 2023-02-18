@@ -137,32 +137,33 @@ Hooks.on("init", function () {
     if (!(resource === "count" || resource === "primary" || resource === "secondary" || resource === "tertiary")) {
       itemResources.push(`resources.${resource}.value`);
       game.system.model.Actor.character.resources[resource] = {
-        lr: 0,
+        lr: false,
         max: 0,
-        sr: 0,
+        sr: false,
         value: 0,
+        label: "",
       };
     }
   });
 
-  function makeResourceField(schemaOptions = {}) {
+  function makeResourceField(schemaOptions = {}, required = true, initial = 0, max = 0) {
     return new foundry.data.fields.SchemaField(
       {
         value: new foundry.data.fields.NumberField({
-          required: true,
+          required: required,
           integer: true,
-          initial: 0,
+          initial: initial,
           labels: "DND5E.ResourceValue",
         }),
         max: new foundry.data.fields.NumberField({
-          required: true,
+          required: required,
           integer: true,
-          initial: 0,
+          initial: max,
           labels: "DND5E.ResourceMax",
         }),
-        sr: new foundry.data.fields.BooleanField({ required: true, labels: "DND5E.ShortRestRecovery" }),
-        lr: new foundry.data.fields.BooleanField({ required: true, labels: "DND5E.LongRestRecovery" }),
-        label: new foundry.data.fields.StringField({ required: true, labels: "DND5E.ResourceLabel" }),
+        sr: new foundry.data.fields.BooleanField({ required: required, labels: "DND5E.ShortRestRecovery" }),
+        lr: new foundry.data.fields.BooleanField({ required: required, labels: "DND5E.LongRestRecovery" }),
+        label: new foundry.data.fields.StringField({ required: required, labels: "DND5E.ResourceLabel" }),
       },
       schemaOptions
     );
@@ -197,7 +198,7 @@ Hooks.on("init", function () {
             eighteenth: makeResourceField({ label: "DND5E.ResourceEighteenth" }),
             nineteenth: makeResourceField({ label: "DND5E.ResourceNineteenth" }),
             twentieth: makeResourceField({ label: "DND5E.ResourceTwentieth" }),
-            count: makeResourceField({ label: "DND5E.ResourceCount" }),
+            count: makeResourceField({ label: "DND5E.ResourceCount", required: false }, false, 3, 20),
           },
           { label: "DND5E.Resources" }
         ),
