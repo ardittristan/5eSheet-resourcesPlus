@@ -37,10 +37,19 @@
     "socket": true,
     "url": "https://github.com/ardittristan/5eSheet-resourcesPlus/tree/master",
     "manifest": "https://raw.githubusercontent.com/ardittristan/5eSheet-resourcesPlus/master/module.json",
-    "download": "https://github.com/ardittristan/5eSheet-resourcesPlus/releases/download/1.8.1/resources-plus.zip",
-	"relationships": {
-		"requires": [
-			{ "id": "lib-wrapper", "type": "module" }
-		]
-	}
+    "download": "https://github.com/ardittristan/5eSheet-resourcesPlus/releases/latest/download/resources-plus.zip",
+    "relationships": {
+        "systems": [
+            {
+                "id": "dnd5e",
+                "type": "system"
+            }
+        ],
+        "requires": [
+            {
+                "id": "lib-wrapper",
+                "type": "module"
+            }
+        ]
+    }
 }
