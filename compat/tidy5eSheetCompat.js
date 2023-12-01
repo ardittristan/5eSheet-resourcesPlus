@@ -20,9 +20,15 @@ function hideResourcesWhichShouldBeHidden(tidyResources, actor) {
     (r) => r.name === "count"
   ).value;
 
+  const globalLimit = game.settings.get("resourcesplus", "globalLimit");
+  const configuredLocalLimit = game.settings.get("resourcesplus", "localLimit");
+  const localLimit =
+    configuredLocalLimit == -1 ? globalLimit : configuredLocalLimit;
+
   const numberOfResourcesToShow = Math.min(
     parseInt(configuredNumberOfResources),
-    parseInt(game.settings.get("resourcesplus", "localLimit"))
+    parseInt(localLimit),
+    parseInt(globalLimit)
   );
 
   if (!isNaN(numberOfResourcesToShow)) {
