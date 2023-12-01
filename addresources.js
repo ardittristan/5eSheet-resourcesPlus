@@ -1,5 +1,6 @@
 import { monkeypatchSheet } from "./lib/itemSheet5e.js";
 import { darkSheetCompat } from "./compat/darksheetCompat.js";
+import { tidy5eSheetCompat } from './compat/tidy5eSheetCompat.js';
 
 // Setting to always show resources
 Hooks.on("init", function () {
@@ -217,6 +218,12 @@ Hooks.on("init", function () {
       case "darksheet":
         if (module.active) {
           darkSheetCompat(sheetResources);
+        }
+        break;
+      case "tidy5e-sheet":
+      case "tidy5e-sheet-kgar":
+        if (module.active) {
+          tidy5eSheetCompat();
         }
         break;
     }
