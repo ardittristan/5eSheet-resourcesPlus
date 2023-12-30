@@ -23,7 +23,7 @@
 }
 
 .sw5e.sheet.actor .resources .resource input[type="checkbox"] {
-  margin-top: -20px;
+  margin-top: -5px;
 }
 
 .dnd5e.sheet.actor ul.attributes li.attribute.initiative,

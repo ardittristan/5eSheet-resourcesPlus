@@ -2,9 +2,14 @@
   "title": "5e-Sheet Resources Plus",
   "description": "A module that allows you to add more resources to character sheets",
   "url": "https://github.com/ardittristan/5eSheet-resourcesPlus/tree/master",
-  "version": "1.8.1",
-  "esmodules": ["addresources.js"],
-  "styles": ["css/resources-plus.css", "compat/tidy5eSheetCompat.css"],
+  "version": "1.9.0",
+  "esmodules": [
+    "addresources.js"
+  ],
+  "styles": [
+    "css/resources-plus.css",
+    "compat/tidy5eSheetCompat.css"
+  ],
   "languages": [
     {
       "lang": "en",
@@ -29,14 +34,40 @@
   "manifest": "https://raw.githubusercontent.com/ardittristan/5eSheet-resourcesPlus/master/module.json",
   "download": "https://github.com/ardittristan/5eSheet-resourcesPlus/releases/latest/download/resources-plus.zip",
   "id": "resourcesplus",
-  "dependencies": [
-    {
-      "name": "lib-wrapper",
-      "type": "module"
-    }
-  ],
   "compatibility": {
     "minimum": "10",
-    "verified": "10"
-  }
+    "verified": "11"
+  },
+  "relationships": {
+    "requires": [
+      {
+        "id": "lib-wrapper",
+        "type": "module",
+        "compatibility": {}
+      }
+    ],
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "2.2.1"
+        }
+      },
+      {
+        "id": "sw5e",
+        "type": "system",
+        "manifest": "https://raw.githubusercontent.com/sw5e-foundry/sw5e/master/static/system.json",
+        "compatibility": {
+          "minimum": "2.2.2.2.5.0"
+        }
+      }
+    ]
+  },
+  "authors": [
+    {
+      "name": "ardittristan",
+      "discord": "ardittristan"
+    }
+  ]
 }

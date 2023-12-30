@@ -89,9 +89,7 @@ Hooks.on("init", function () {
     sheetResources.push("count");
   }
 
-  let actorSheetClassName = "ActorSheet5eCharacter";
   if (game.system.id === "sw5e") {
-    actorSheetClassName += "New";
     Hooks.once("ready", async () => {
       window.resourcesPlusTranslations = await Localization.prototype._loadTranslationFile(
         Localization.prototype._filterLanguagePaths(game.modules.get("resourcesplus"), "en")
@@ -99,12 +97,12 @@ Hooks.on("init", function () {
     });
   }
 
+  if (CONFIG.Actor?.trackableAttributes?.character?.bar)
+    CONFIG.Actor.trackableAttributes.character.bar = Array.from(new Set(CONFIG.Actor.trackableAttributes.character.bar.concat(sheetResources.map(r => "resources." + r))));
+
   // Monkeypatch original function
 
-  libWrapper.register(
-    "resourcesplus",
-    `game.${game.system.id}.applications.actor.${actorSheetClassName}.prototype.getData`,
-    async function (wrapper, ...args) {
+  const getData = async function (wrapper, ...args) {
       const sheetData = await wrapper(...args);
       sheetData["resources"] = sheetResources.reduce((arr, r) => {
         const res = sheetData.actor.system.resources[r] || {};
@@ -127,9 +125,11 @@ Hooks.on("init", function () {
         return arr.concat([res]);
       }, []);
       return sheetData;
-    },
-    "WRAPPER"
-  );
+    }
+
+  libWrapper.register("resourcesplus", `game.${game.system.id}.applications.actor.ActorSheet5eCharacter.prototype.getData`, getData, "WRAPPER");
+  if (game.system.id === "sw5e")
+    libWrapper.register("resourcesplus", `game.${game.system.id}.applications.actor.ActorSheetOrig5eCharacter.prototype.getData`, getData, "WRAPPER");
 
   /** @type {string[]} */
   let itemResources = [];
@@ -147,7 +147,7 @@ Hooks.on("init", function () {
     }
   });
 
-  function makeResourceField(schemaOptions = {}, required = true, initial = 0, max = 0) {
+  function makeResourceField(schemaOptions = {}, required = false, initial = 0, max = 0) {
     return new foundry.data.fields.SchemaField(
       {
         value: new foundry.data.fields.NumberField({
@@ -179,9 +179,9 @@ Hooks.on("init", function () {
       return this.mergeSchema(schema, {
         resources: new foundry.data.fields.SchemaField(
           {
-            primary: makeResourceField({ label: "DND5E.ResourcePrimary" }),
-            secondary: makeResourceField({ label: "DND5E.ResourceSecondary" }),
-            tertiary: makeResourceField({ label: "DND5E.ResourceTertiary" }),
+            primary: makeResourceField({ label: "DND5E.ResourcePrimary" }, true),
+            secondary: makeResourceField({ label: "DND5E.ResourceSecondary" }, true),
+            tertiary: makeResourceField({ label: "DND5E.ResourceTertiary" }, true),
             fourth: makeResourceField({ label: "DND5E.ResourceFourth" }),
             fifth: makeResourceField({ label: "DND5E.ResourceFifth" }),
             sixth: makeResourceField({ label: "DND5E.ResourceSixth" }),
