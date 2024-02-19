@@ -36,6 +36,7 @@
 }
 
 .dnd5e.sheet.actor ul.attributes li.attribute.resource.hidden,
+.dnd5e2.sheet.actor .favorites ul.unlist li.attribute.resource.hidden,
 .sw5e.sheet.actor .resources .resource.hidden {
   display: none !important;
 }

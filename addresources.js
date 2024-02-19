@@ -1,6 +1,7 @@
 import { monkeypatchSheet } from "./lib/itemSheet5e.js";
 import { darkSheetCompat } from "./compat/darksheetCompat.js";
 import { tidy5eSheetCompat } from './compat/tidy5eSheetCompat.js';
+import { newSheetCompat } from './compat/newSheetCompat.js';
 
 // Setting to always show resources
 Hooks.on("init", function () {
@@ -137,13 +138,14 @@ Hooks.on("init", function () {
   sheetResources.forEach((resource) => {
     if (!(resource === "count" || resource === "primary" || resource === "secondary" || resource === "tertiary")) {
       itemResources.push(`resources.${resource}.value`);
-      game.system.model.Actor.character.resources[resource] = {
-        lr: false,
-        max: 0,
-        sr: false,
-        value: 0,
-        label: "",
-      };
+      if (game.system.model?.Actor?.character?.resources)
+        game.system.model.Actor.character.resources[resource] = {
+          lr: false,
+          max: 0,
+          sr: false,
+          value: 0,
+          label: "",
+        };
     }
   });
 
@@ -210,6 +212,8 @@ Hooks.on("init", function () {
 
   // Monkeypatch item sheet list so it shows up under the resources for items/spells
   monkeypatchSheet(itemResources);
+
+  newSheetCompat();
 
   // Compatibility
   game.modules.forEach((module) => {
