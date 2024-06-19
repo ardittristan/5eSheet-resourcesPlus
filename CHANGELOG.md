@@ -1,5 +1,9 @@
 # Patch Notes
 
+## Version 1.10.1
+
+- Update for V12. Fixes sheets not opening on Foundry V12.
+
 ## Version 1.10.0
 
 - Update for dnd5e v3+
