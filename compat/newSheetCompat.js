@@ -15,7 +15,7 @@ export function newSheetCompat() {
     if (path != "systems/dnd5e/templates/actors/character-sheet-2.hbs")
       return origGetTemplate(path, id, ...misc);
 
-    if ( !_templateCache.hasOwnProperty(path) ) {
+    if ( !Handlebars.partials.hasOwnProperty(path) ) {
       await new Promise((resolve, reject) => {
         game.socket.emit("template", path, resp => {
           if (resp.error) return reject(new Error(resp.error));
@@ -78,13 +78,13 @@ export function newSheetCompat() {
 
           const compiled = Handlebars.compile(resp.html);
           Handlebars.registerPartial(id ?? path, compiled);
-          _templateCache[path] = compiled;
+          Handlebars.partials[path] = compiled;
           console.log(`Foundry VTT | Retrieved and compiled template ${path}`);
           resolve(compiled);
         });
       });
     }
-    return _templateCache[path];
+    return Handlebars.partials[path];
 }
 
   initialized = true;
