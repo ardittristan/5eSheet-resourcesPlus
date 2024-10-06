@@ -210,8 +210,11 @@ Hooks.on("init", function () {
     "WRAPPER"
   );
 
-  // Monkeypatch item sheet list so it shows up under the resources for items/spells
-  monkeypatchSheet(itemResources);
+  // Updating CONFIG.DND5E.consumableResources must be done in "setup"
+  Hooks.on("setup", function () {
+    // Monkeypatch item sheet list so it shows up under the resources for items/spells
+    monkeypatchSheet(itemResources);
+  });
 
   newSheetCompat();
 
